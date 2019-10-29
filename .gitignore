@@ -1,0 +1,14 @@
+.Rhistory
+Zhou/
+Simulations/
+Papers/
+Results/
+*.txt
+*Rproj*
+*.aux
+*.log
+*.toc
+*.snm
+*.nav
+*.gz
+*.out

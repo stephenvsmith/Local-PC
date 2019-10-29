@@ -1,0 +1,3 @@
+load("/Users/stephensmith/Desktop/Research/projects/bn_data_generation/networks/rds/asia.rds")
+load("/Users/stephensmith/Desktop/Research/projects/bn_data_generation/networks/rds/alarm.rds")
+readRDS("/Users/stephensmith/Desktop/Research/projects/bn_data_generation/networks/rds/alarm.rds")
