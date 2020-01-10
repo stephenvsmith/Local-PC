@@ -535,10 +535,6 @@ dir.check <- function(dir, min.depth = 0){
 ########## Building the Simulations ##########
 
 ### Function for network results
-### Arguments:
-### net - name of the network we are working on
-### vars - list containing all the variables we need to run the simulations and store results
-### Returns vars after setting up the DAG of interest
 NetSetup <- function(net,vars){
   # Change Working Directory to Store Results
   setwd(vars$result_dir)
@@ -564,7 +560,8 @@ NetSetup <- function(net,vars){
   
   vars$true_cpdag <- as.matrix(read.table(paste0(sim_net_dir,dir_name,"/trueCPDAG.txt")))
   vars$true_cpdag <- matrix(as.numeric(vars$true_cpdag),nrow = nrow(vars$true_cpdag))
-  
+  vars$data <- read.table(paste0(sim_net_dir,dir_name,"/data1.txt"))
+
   return(vars)
 }
 
@@ -579,6 +576,8 @@ SaveDAGPhotos <- function(net,vars) {
   colnames(vars$true_dag) <- names
   rownames(vars$true_cpdag) <- names
   colnames(vars$true_cpdag) <- names
+  colnames(vars$data) <- names
+  
   
   # Create true DAG and save photo
   t_dag <- empty.graph(names)
@@ -627,7 +626,7 @@ lpc_builds <- function(vars,net,num_sep_nodes=1) {
     
     vars$results <- rbind(results,c(net,paste(target,collapse = ","),length(target),vars$time,metrics))
     vars$current_network <- rbind(vars$current_network,c(net,paste(target,collapse = ","),length(target),vars$time,metrics))
-
+    
     write.table(vars$results[nrow(vars$results),],"measurements.txt")
     setwd("..")
   }
@@ -667,10 +666,10 @@ test_bn_setup <- function(net,target,vars){
   larger_ones <- c('barley','child','magic-niab')
   lmax <- ifelse(net %in% larger_ones,5,3)
   start_time <- Sys.time()
-  vars$result <- local_pc2(true_dag = vars$true_dag,target = target,lmax=lmax,verbose = FALSE,verbose_small = FALSE,pop = TRUE)
+  vars$result <- local_pc2(true_dag = vars$true_dag,data = vars$data,target = target,lmax=lmax,verbose = FALSE,verbose_small = FALSE,pop = FALSE)
   end_time <- Sys.time()
   vars$time <- difftime(end_time,start_time,units = 'secs')
-
+  
   cat("Local PC Completed Running\n",
       file = paste0(vars$result_dir,"test_bn_notes.txt"),append = TRUE)
   return(vars)
@@ -697,10 +696,6 @@ rm_ind <- function(target,vars){
     vars$true_local_cpdag <- vars$true_cpdag[-ind,-ind]
     rownames(vars$true_local_cpdag) <- vars$node_names1
     colnames(vars$true_local_cpdag) <- vars$node_names1
-    # tmp <- empty.graph(nodes = vars$node_names1)
-    # amat(tmp) <- vars$true_local_cpdag
-    # tmp2 <- bnlearn::cpdag(tmp)
-    # vars$true_local_cpdag <- amat(tmp2)
   } else {
     vars$node_names1 <- vars$node_names
     vars$true_local_cpdag <- vars$true_cpdag
@@ -763,7 +758,7 @@ addedEdges <- function(true_cpdag,lpc_dag){
           
         }
       }
-        
+      
     }
   }
   return(c("total"=total,"undirected"=undirected,"directed"=directed))
@@ -875,5 +870,3 @@ local_pc_dist <- function(target,vars){
   
   return(metrics)
 }
-
-

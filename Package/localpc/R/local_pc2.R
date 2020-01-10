@@ -7,7 +7,7 @@
 #'
 #' @export
 
-local_pc2 <- function(data=NULL,true_dag=NULL,target,lmax=3,pop=TRUE,verbose = TRUE,verbose_small=TRUE){
+local_pc2 <- function(data=NULL,true_dag=NULL,target,lmax=3,tol=0.01,pop=TRUE,verbose = TRUE,verbose_small=TRUE){
 
   build <- build_initial_graph2(target,true_dag)
   Ctilde <- build$Ctilde
@@ -16,12 +16,12 @@ local_pc2 <- function(data=NULL,true_dag=NULL,target,lmax=3,pop=TRUE,verbose = T
 
   skel_res <- pc_skel_loc(dataset = data,C_tilde = Ctilde,
                           true_dag=true_dag,neighbors=neighbors,
-                          pop = pop,lmax = lmax,verbose = verbose)
+                          pop = pop,lmax = lmax,verbose = verbose,tol = tol)
 
   G <- pc_vstruct(G = skel_res$adjacency,S = skel_res$sep_sets,verbose=verbose)
 
   S <- skel_res$sep_sets
   p_vals_vec <- skel_res$p_vals
-  browser()
+
   return(list("G"=G,"S"=S,"p_vals"=p_vals_vec))
 }

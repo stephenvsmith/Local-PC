@@ -39,11 +39,16 @@ get_pval <- function(var_list){
 
       #cat("i: ",i,",j: ",j,", k: ",paste(k,collapse = ","),"\n")
       #browser()
-      corinv <- solve(var_list$cor.mat[c(var_list$i,var_list$j,var_list$k_set),c(var_list$i,var_list$j,var_list$k)])
-      rho <- -(corinv[1,2])/sqrt(corinv[1,1]*corinv[2,2])
+      x <- var_list$dataset[,var_list$i]
+      y <- var_list$dataset[,var_list$j]
+      #if (length(var_list$k)) browser()
+      z <- as.matrix(var_list$dataset[,var_list$k_set])
+      lm1 <- lm(x ~ z)
+      lm2 <- lm(y ~ z)
+      rho <- cor(lm1$residuals,lm2$residuals)
       Z_ij <- 0.5*log((1+rho)/(1-rho))
     }
-    var_list$pval <- 2*(1-pnorm(sqrt(var_list$n-length(var_list$k)-3)*abs(Z_ij)))
+    var_list$pval <- 2*(1-pnorm(sqrt(var_list$n-length(var_list$k_set)-3)*abs(Z_ij)))
   }
 
   return(var_list)

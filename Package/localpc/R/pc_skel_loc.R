@@ -11,7 +11,7 @@
 
 pc_skel_loc <- function(dataset=NULL,C_tilde=NULL,true_dag=NULL,
                         neighbors=NULL,pop=TRUE,lmax=3,
-                        verbose=TRUE,tol=0.005){
+                        verbose=TRUE,tol=0.01){
 
   # Initial setup
   var_list <- pc_skel_setup(dataset,true_dag,C_tilde,

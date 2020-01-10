@@ -2,7 +2,7 @@
 
 # Author: Stephen Smith
 # Date: 10/22/2019
-# Second attempt at the build_results file
+# Second attempt at the build_results file for sample version
 
 ######################################################################################################
 
@@ -10,10 +10,10 @@
 
 # Storing Results
 result_cols <- c("Network","Target","Number_of_Targets","Time_to_Build",
-                 "Undirected Missing","Directed Missing","Total Missing",
-                 "Undirected Added","Directed Added","Total Added",
-                 "Wrong_Direction","Directed_Undirected","Undirected_Directed",
-                 "SHD","tp","fp","fn","Same_V_Structures")
+                                "Undirected Missing","Directed Missing","Total Missing",
+                                "Undirected Added","Directed Added","Total Added",
+                                "Wrong_Direction","Directed_Undirected","Undirected_Directed",
+                                "SHD","tp","fp","fn","Same_V_Structures")
 results <- matrix(nrow=0,ncol = length(result_cols))
 colnames(results) <- result_cols
 
@@ -21,19 +21,19 @@ colnames(results) <- result_cols
 
 br <- function(net,vars){
   cat("Working on network",net,"\n")
-  max_sep <- 5
+  max_target <- 5
   # Store results for current network
   vars$current_network <- matrix(nrow=0,ncol = length(result_cols))
   colnames(vars$current_network) <- result_cols
   
   vars <- NetSetup(net,vars)
   if (nrow(vars$true_dag)>45 | nrow(vars$true_dag)<15) {
-    max_sep <- 2
-  }
-    
+    max_target <- 1
+  } 
+  
   vars <- SaveDAGPhotos(net,vars)
   
-  for (num_sep_nodes in 1:max_sep){
+  for (num_sep_nodes in 1:max_target){
     # Building the result file
     if (!dir.exists(paste0("./",num_sep_nodes," target"))) dir.create(paste0("./",num_sep_nodes," target"))
     setwd(paste0("./",num_sep_nodes," target"))
@@ -47,24 +47,23 @@ br <- function(net,vars){
   return(vars)
 }
 
-
+  
 
 ##### Script #####
 
 var_list <- list()
 # Storing Results
-var_list$results <- matrix(nrow=0,ncol = 5)
-colnames(var_list$results) <- c("Network","Target","Missing","Added","Same_V_Structures")
+var_list$results <- results
 
 ### Define paths for storing
 package_loc <- '~/Desktop/Research/Package/'
 var_list$ps2 <- '/home/stephen/'
-var_list$result_dir <- '~/Desktop/Research/Results/population'
+var_list$result_dir <- '~/Desktop/Research/Results/sample/'
 var_list$simulation_dir <- '/home/stephen/Desktop/Research/Simulations/'
 var_list$rds_dir <- paste0(var_list$ps2,"Desktop/Research/Networks/rds/")
 
 ### Source Functions  
-source('~/Desktop/Research/Package/test_scripts/helper_files.R')
+source('~/Desktop/Research/Package/test_scripts_sample/helper_files_sample.R')
 
 ### Load Libraries
 

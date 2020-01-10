@@ -1,15 +1,17 @@
 lpc_builds <- function(true_dag,true_cpdag,num_sep_nodes,net) {
+  
+  ### Generating all possible target sets
   nodes <- 1:nrow(true_dag)
   target_sets <- combn(nodes,num_sep_nodes)
 
-  # 30 maximum different separting sets are tested
+  # 30 maximum different target sets are tested
   num <- min(30,ncol(target_sets))
   target_sets <- target_sets[,sample(1:ncol(target_sets),num,replace = FALSE)]
   if (!is.matrix(target_sets)){
     target_sets <- matrix(target_sets,ncol = length(target_sets))
   }
   tmp <- apply(target_sets,2,function(target,net){
-
+    # Create the necessary files
     if (!file.exists(paste0(net,"; target=",paste(target,collapse = ","))))
       dir.create(paste0(net,"; target=",paste(target,collapse = ",")))
     setwd(paste0("./",net,"; target=",paste(target,collapse = ",")))
