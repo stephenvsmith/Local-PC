@@ -74,6 +74,9 @@ var_list$data_grid <- GenerateDataGrid()
 
 ### Names of the Networks
 var_list$net_names <- GetNetworkNames(var_list$ps2)
+completed <- list.files("~/Desktop/Research/Results/sample")
+var_list$net_names <- setdiff(var_list$net_names,completed)
+
 
 ### Build results for each network
 
