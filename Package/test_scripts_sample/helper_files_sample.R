@@ -624,8 +624,7 @@ lpc_builds <- function(vars,net,num_sep_nodes=1) {
     vars <- test_bn(net,target,vars)
     if (!vars$no_photo){
       metrics <- local_pc_dist(target,vars)
-      
-      vars$results <- rbind(results,c(net,paste(target,collapse = ","),length(target),vars$time,metrics))
+      vars$results <- rbind(vars$results,c(net,paste(target,collapse = ","),length(target),vars$time,metrics))
       vars$current_network <- rbind(vars$current_network,c(net,paste(target,collapse = ","),length(target),vars$time,metrics))
       
       write.table(vars$results[nrow(vars$results),],"measurements.txt")
@@ -665,12 +664,11 @@ test_bn <- function(net,target,vars,verbose=FALSE) {
 # Runs local PC for the given target set and saves the result
 test_bn_setup <- function(net,target,vars){
   cat("Network: ",net,"\n",file = paste0(vars$result_dir,"test_bn_notes.txt"),append = FALSE)
-  #if (2 %in% target & 3 %in% target) browser()
-  #target <- c(2,3)
+
   larger_ones <- c('barley','child','magic-niab')
   lmax <- ifelse(net %in% larger_ones,5,3)
   start_time <- Sys.time()
-  vars$result <- local_pc2(true_dag = vars$true_dag,data = vars$data,target = target,lmax=lmax,verbose = FALSE,verbose_small = FALSE,pop = FALSE)
+  vars$result <- local_pc2(true_dag = vars$true_dag,data = vars$data,target = target,lmax=lmax,verbose = FALSE,verbose_small = FALSE,pop = FALSE,tol = 0.05)
   end_time <- Sys.time()
   vars$time <- difftime(end_time,start_time,units = 'secs')
   
@@ -870,6 +868,44 @@ undirected_directed <- function(true_cpdag,lpc_cpdag) {
 }
 
 
+getEdgeNumbers <- function(true_dag,true_local_cpdag,lpc_cpdag){
+  total <- 0
+  num_local_true <- 0
+  num_local_estimate <- 0
+  
+  total <- sum(colSums(true_dag))
+  
+  for (i in 1:nrow(true_local_cpdag)){
+    for (j in 1:ncol(true_local_cpdag)){
+      if (true_local_cpdag[i,j]==1 & true_local_cpdag[j,i]==1){
+        num_local_true <- num_local_true + 0.5
+      } else if (true_local_cpdag[i,j]==1 & true_local_cpdag[j,i]==0){
+        num_local_true <- num_local_true + 1
+      }
+    }
+  }
+  
+  for (i in 1:nrow(lpc_cpdag)){
+    for (j in 1:ncol(lpc_cpdag)){
+      if (lpc_cpdag[i,j]==1 & lpc_cpdag[j,i]==1){
+        num_local_estimate <- num_local_estimate + 0.5
+      } else if (lpc_cpdag[i,j]==1 & lpc_cpdag[j,i]==0){
+        num_local_estimate <- num_local_estimate + 1
+      }
+    }
+  }
+  
+  return(c(total,num_local_true,num_local_estimate))
+}
+
+getVertexNumbers <- function(true_dag,true_local_cpdag,lpc_cpdag){
+  total <- nrow(true_dag)
+  total_local_true <- nrow(true_local_cpdag)
+  total_local_estimate <- nrow(lpc_cpdag)
+  
+  return(c(total,total_local_true,total_local_estimate))
+}
+
 # Wrapper function to compute all the distance metrics
 local_pc_dist <- function(target,vars){
   vs_dag <- vstructs(vars$cpdag)
@@ -882,7 +918,11 @@ local_pc_dist <- function(target,vars){
   added <- addedEdges(vars$true_local_cpdag,vars$lpc_amat)
   missing <- missingEdges(vars$true_local_cpdag,vars$lpc_amat)
   
-  metrics <- c(missing["undirected"],missing["directed"],missing["total"],
+  vertex_nums <- getVertexNumbers(vars$true_dag,vars$true_local_cpdag,vars$lpc_amat)
+  edge_nums <- getEdgeNumbers(vars$true_dag,vars$true_local_cpdag,vars$lpc_amat)
+  
+  metrics <- c(vertex_nums,edge_nums,
+               missing["undirected"],missing["directed"],missing["total"],
                added["undirected"],added["directed"],added["total"],
                wrongDirection(vars$true_local_cpdag,vars$lpc_amat),
                directed_undirected(vars$true_local_cpdag,vars$lpc_amat),

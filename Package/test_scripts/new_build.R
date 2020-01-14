@@ -9,7 +9,7 @@
 ##### Variable Creation #####
 
 # Storing Results
-result_cols <- c("Network","Target","Number_of_Targets","Time_to_Build",
+result_cols <- c("Network","Total_Size","True_Local_Size","Estimated_Local_Size","Target","Number_of_Targets","Time_to_Build",
                  "Undirected Missing","Directed Missing","Total Missing",
                  "Undirected Added","Directed Added","Total Added",
                  "Wrong_Direction","Directed_Undirected","Undirected_Directed",
