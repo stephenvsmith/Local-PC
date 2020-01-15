@@ -14,7 +14,7 @@ completed_networks <- list.files()
 results <- list()
 
 for (net in completed_networks){
-  net.dir <- paste0(getwd(),"/",net,"/")
+  net.dir <- paste0("/home/stephen/Desktop/Research/Results/population/",net,"/")
   result.file <- paste0(net.dir,net," results.txt")
   if (file.exists(result.file)){
     results[[net]] <- read.table(result.file)
@@ -71,9 +71,55 @@ ggplot(results_df,aes(tp))+geom_histogram()+facet_wrap(~Number_of_Targets,scales
 ggplot(results_df,aes(tp))+geom_histogram()+facet_wrap(~Network,scales = "free")+ggtitle("Distribution of TPs for Different Networks")
 ```
 
+## Distribution of Other Statistics
+### Undirected Edges Missing in Estimated CPDAG
+```{r}
+ggplot(results_df,aes(Undirected.Missing))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Undirected.Missing))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Directed.Missing))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Directed.Missing))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Total.Missing))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Total.Missing))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Undirected.Added))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Undirected.Added))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Directed.Added))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Directed.Added))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Total.Added))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Total.Added))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Wrong_Direction))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Wrong_Direction))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Directed_Undirected))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Directed_Undirected))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Undirected_Directed))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Undirected_Directed))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
 
 ## Sample Version
-This is a preliminary display of the results. We are using a significance level of 0.005 for our hypothesis tests.
+This is a preliminary display of the results. We are using a significance level of 0.05 for our hypothesis tests.
 
 ```{r grab files2}
 sample.dir <- "/home/stephen/Desktop/Research/Results/sample/"
@@ -118,5 +164,142 @@ ggplot(results_df,aes(fn))+geom_histogram()+facet_wrap(~Number_of_Targets)
 ```{r}
 ggplot(results_df,aes(fp))+geom_histogram()+facet_wrap(~Network)
 ggplot(results_df,aes(fp))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+## Distribution of Other Statistics
+### Undirected Edges Missing in Estimated CPDAG
+```{r}
+ggplot(results_df,aes(Undirected.Missing))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Undirected.Missing))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Directed.Missing))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Directed.Missing))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Total.Missing))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Total.Missing))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Undirected.Added))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Undirected.Added))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Directed.Added))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Directed.Added))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Total.Added))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Total.Added))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Wrong_Direction))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Wrong_Direction))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Directed_Undirected))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Directed_Undirected))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Undirected_Directed))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Undirected_Directed))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+## Sample Version Number 2
+This is a preliminary display of the results. We are using a significance level of 0.005 for our hypothesis tests.
+
+```{r grab files3}
+files <- list.files("~/Desktop/Research/Results/saved/sample/tol=0.005")
+
+res <- list()
+for (f in files){
+  res[[f]] <- read.table(paste0("~/Desktop/Research/Results/saved/sample/tol=0.005","/",f))
+}
+
+  results_df <- do.call(rbind,res)
+```
+
+### Same V-Structures
+
+```{r}
+table(results_df$Same_V_Structures)
+```
+
+### SHD
+
+```{r}
+table(results_df$SHD)
+```
+
+```{r}
+ggplot(results_df,aes(SHD))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(SHD))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+### False Negatives
+```{r}
+ggplot(results_df,aes(fn))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(fn))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+### False Positives
+```{r}
+ggplot(results_df,aes(fp))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(fp))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+## Distribution of Other Statistics
+### Undirected Edges Missing in Estimated CPDAG
+```{r}
+ggplot(results_df,aes(Undirected.Missing))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Undirected.Missing))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Directed.Missing))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Directed.Missing))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Total.Missing))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Total.Missing))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Undirected.Added))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Undirected.Added))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Directed.Added))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Directed.Added))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Total.Added))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Total.Added))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Wrong_Direction))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Wrong_Direction))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Directed_Undirected))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Directed_Undirected))+geom_histogram()+facet_wrap(~Number_of_Targets)
+```
+
+```{r}
+ggplot(results_df,aes(Undirected_Directed))+geom_histogram()+facet_wrap(~Network)
+ggplot(results_df,aes(Undirected_Directed))+geom_histogram()+facet_wrap(~Number_of_Targets)
 ```
 

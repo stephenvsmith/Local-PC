@@ -8,13 +8,8 @@
 #' @param true_dag a matrix containing all the information about the true dag
 #'
 
-build_initial_graph2 <- function(target,true_dag){
+build_initial_graph <- function(target,true_dag){
   # Ctilde is our initial graph
-  Ctilde <- matrix(0,ncol=ncol(true_dag),nrow=nrow(true_dag))
-  if (!is.null(rownames(true_dag))){
-    rownames(Ctilde) <- rownames(true_dag)
-    colnames(Ctilde) <- colnames(true_dag)
-  }
   neighbors <- target # Tracks all the neighbors we have to find neighborhoods for (second order neighbors)
 
   neighbors_list <- list()
@@ -23,8 +18,8 @@ build_initial_graph2 <- function(target,true_dag){
 
   ### We will now find the first order neighbors of each target node
   for (t in target){ # Build a subgraph of t U Neighborhood(t)
-    tmp_list <- build_subgraph_one_target(t,Ctilde,true_dag)
-    Ctilde <- tmp_list[[1]]; neighbors <- union(neighbors,tmp_list[[2]])
+    tmp_list <- build_subgraph_one_target(t,true_dag)
+    neighbors <- union(neighbors,tmp_list[[2]])
     if (length(target) > 1) neighborhood[[t]] <- tmp_list[[2]]
   }
 
@@ -76,59 +71,16 @@ find_neighbors <- function(t,true_dag){
 
 ####################################################
 
-build_subgraph_one_target <- function(t,Ctilde,true_dag) {
+build_subgraph_one_target <- function(t,true_dag) {
 
   fo_n <- find_neighbors(t,true_dag) # obtain first-order neighbors of the target
   neighbors <- union(t,fo_n)
 
-  ### We now create a complete graph for this clique
-
-  # Start with connecting the first-order neighbors
-  Ctilde <- connect_fo(fo_n,Ctilde)
-
-  # Connecting target node with first-order neighbors
-  Ctilde <- connect_fo_target(t,fo_n,Ctilde)
-
-  return(list(Ctilde,neighbors))
+  return(neighbors)
 
 }
 
 
-##############################################
-
-# Connect first-order neighbors
-
-##############################################
-
-connect_fo <- function(fo_n,Ctilde) {
-
-  for (f in fo_n){
-    # We connect first-order neighbors to each other
-    # But we prevent self-loops
-    for (ff in fo_n[fo_n!=f]){
-      Ctilde[f,ff] <- 1
-      Ctilde[ff,f] <- 1
-    }
-  }
-
-  return(Ctilde)
-}
-
-##############################################
-
-# Connect first-order neighbors to target
-
-##############################################
-
-connect_fo_target <- function(t,fo_n,Ctilde) {
-  # Connecting target node with first order neighbors
-  for (f in fo_n){
-    Ctilde[t,f] <- 1
-    Ctilde[f,t] <- 1
-  }
-
-  return(Ctilde)
-}
 
 ##############################################
 

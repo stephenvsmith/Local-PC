@@ -7,10 +7,11 @@
 #'
 #' @export
 
-local_pc2 <- function(data=NULL,true_dag=NULL,target,lmax=3,tol=0.01,pop=TRUE,verbose = TRUE,verbose_small=TRUE){
+localpc <- function(data=NULL,true_dag=NULL,target,G=NULL,lmax=3,tol=0.01,pop=TRUE,verbose = TRUE,verbose_small=TRUE){
 
-  build <- build_initial_graph2(target,true_dag)
-  Ctilde <- build$Ctilde
+  build <- build_initial_graph(target,true_dag)
+  
+  Ctilde <- G
 
   neighbors <- build$neighbors
 
