@@ -10,10 +10,12 @@
 
 # Storing Results
 result_cols <- c("Network","Target","Number_of_Targets","Time_to_Build",
-                                "Undirected Missing","Directed Missing","Total Missing",
-                                "Undirected Added","Directed Added","Total Added",
-                                "Wrong_Direction","Directed_Undirected","Undirected_Directed",
-                                "SHD","tp","fp","fn","Same_V_Structures")
+                 "Total_Size","True_Local_Size","Estimated_Local_Size",
+                 "Total_Edges","True_Local_Edges","Estimated_Local_Edges",
+                 "Undirected Missing","Directed Missing","Total Missing",
+                 "Undirected Added","Directed Added","Total Added",
+                 "Wrong_Direction","Directed_Undirected","Undirected_Directed",
+                 "SHD","tp","fp","fn","Same_V_Structures")
 results <- matrix(nrow=0,ncol = length(result_cols))
 colnames(results) <- result_cols
 
@@ -74,6 +76,9 @@ var_list$data_grid <- GenerateDataGrid()
 
 ### Names of the Networks
 var_list$net_names <- GetNetworkNames(var_list$ps2)
+completed <- list.files("~/Desktop/Research/Results/sample")
+#var_list$net_names <- setdiff(var_list$net_names,completed)
+var_list$net_names <- c("clgaussian.test", "earthquake","gaussian.test","insurance","learning.test")
 
 ### Build results for each network
 

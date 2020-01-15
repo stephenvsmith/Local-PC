@@ -9,7 +9,7 @@
 ##### Variable Creation #####
 
 # Storing Results
-result_cols <- c("Network","Target","Number_of_Targets","Time_to_Build",
+result_cols <- c("Network","Total_Size","True_Local_Size","Estimated_Local_Size","Target","Number_of_Targets","Time_to_Build",
                  "Undirected Missing","Directed Missing","Total Missing",
                  "Undirected Added","Directed Added","Total Added",
                  "Wrong_Direction","Directed_Undirected","Undirected_Directed",
@@ -33,12 +33,12 @@ br <- function(net,vars){
     
   vars <- SaveDAGPhotos(net,vars)
   
-  for (num_sep_nodes in 1:max_sep){
+  for (num_targets in 1:max_sep){
     # Building the result file
-    if (!dir.exists(paste0("./",num_sep_nodes," target"))) dir.create(paste0("./",num_sep_nodes," target"))
-    setwd(paste0("./",num_sep_nodes," target"))
+    if (!dir.exists(paste0("./",num_targets," target"))) dir.create(paste0("./",num_targets," target"))
+    setwd(paste0("./",num_targets," target"))
     
-    vars <- lpc_builds(vars,net,num_sep_nodes)
+    vars <- lpc_builds(vars,net,num_targets)
     setwd('..')
   }
   
@@ -75,6 +75,8 @@ var_list$data_grid <- GenerateDataGrid()
 
 ### Names of the Networks
 var_list$net_names <- GetNetworkNames(var_list$ps2)
+completed <- list.files("~/Desktop/Research/Results/population")
+var_list$net_names <- setdiff(var_list$net_names,completed)
 
 ### Build results for each network
 

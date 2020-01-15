@@ -623,13 +623,15 @@ lpc_builds <- function(vars,net,num_sep_nodes=1) {
     #   cat(i,":",vars$node_names[i],"\n")
     # }
     vars <- test_bn(net,target,vars)
-    metrics <- local_pc_dist(target,vars)
-    
-    vars$results <- rbind(results,c(net,paste(target,collapse = ","),length(target),vars$time,metrics))
-    vars$current_network <- rbind(vars$current_network,c(net,paste(target,collapse = ","),length(target),vars$time,metrics))
-
-    write.table(vars$results[nrow(vars$results),],"measurements.txt")
-    setwd("..")
+    if (!vars$no_photo){
+      metrics <- local_pc_dist(target,vars)
+      
+      vars$results <- rbind(results,c(net,paste(target,collapse = ","),length(target),vars$time,metrics))
+      vars$current_network <- rbind(vars$current_network,c(net,paste(target,collapse = ","),length(target),vars$time,metrics))
+      
+      write.table(vars$results[nrow(vars$results),],"measurements.txt")
+      setwd("..")
+    }
   }
   
   return(vars)
@@ -644,7 +646,9 @@ test_bn <- function(net,target,vars,verbose=FALSE) {
   
   # Simplifying DAGs
   vars <- rm_ind(target,vars)
-  
+  if (is.null(vars$cpdag) | vars$no_photo){
+    return(vars)
+  }
   if (verbose) cat("Target Node(s): ",paste(vars$node_names[target],collapse = " | "),"\n")
   if (verbose) bnlearn::graphviz.plot(vars$cpdag)
   png(filename = "comparison.png",width = 1200,height = 1200)
@@ -688,8 +692,12 @@ rm_ind <- function(target,vars){
   cat("Indices to remove:",paste(ind,sep = ", "),"\n",
       file = paste0(vars$result_dir,"test_bn_notes.txt"),append = TRUE)
   
+  vars$no_photo <- FALSE
   if (!is.null(ind)){
-    if (length(ind) >= nrow(g)-1) return()
+    if (length(ind) >= nrow(g)-1) {
+      vars$no_photo <- TRUE
+      return(vars)
+    }
     g <- g[-ind,-ind]
     vars$node_names1 <- vars$node_names[-ind]
     rownames(g) <- vars$node_names1
@@ -738,21 +746,25 @@ checkPair <- function(pair_list,i,j){
 }
 
 # This will compute the number of extraneous edges in our estimated CPDAG
-addedEdges <- function(true_cpdag,lpc_dag){
+addedEdges <- function(true_cpdag,lpc_cpdag){
+  
+  if (is.null(true_cpdag) & is.null(lpc_cpdag)){
+    return(rep(0,3))
+  }
   total <- 0
   directed <- 0
   undirected <- 0
   pairs_counted <- list()
-  for (i in 1:nrow(lpc_dag)){
-    for (j in 1:ncol(lpc_dag)){
+  for (i in 1:nrow(lpc_cpdag)){
+    for (j in 1:ncol(lpc_cpdag)){
       
-      if (lpc_dag[i,j] == 1){
+      if (lpc_cpdag[i,j] == 1){
         if (true_cpdag[i,j]==0 & true_cpdag[j,i]==0){
           
           # Case where we have added an edge that doesn't exist at all
           if (checkPair(pairs_counted,i,j)){
             total <- total + 1
-            if (lpc_dag[j,i]==1){
+            if (lpc_cpdag[j,i]==1){
               undirected <- undirected + 1
             } else {
               directed <- directed + 1
@@ -770,7 +782,10 @@ addedEdges <- function(true_cpdag,lpc_dag){
 }
 
 # This will compute the number of missing edges in the estimated DAG
-missingEdges <- function(true_cpdag,lpc_dag){
+missingEdges <- function(true_cpdag,lpc_cpdag){
+  if (is.null(true_cpdag) & is.null(lpc_cpdag)){
+    return(rep(0,3))
+  }
   total <- 0
   undirected <- 0
   directed <- 0
@@ -779,7 +794,7 @@ missingEdges <- function(true_cpdag,lpc_dag){
     for (j in 1:ncol(true_cpdag)){
       
       if (true_cpdag[i,j]==1){
-        if (lpc_dag[i,j]==0 & lpc_dag[j,i]==0){
+        if (lpc_cpdag[i,j]==0 & lpc_cpdag[j,i]==0){
           
           # Check to see if this pair has been considered
           if (checkPair(pairs_counted,i,j)){
@@ -800,6 +815,9 @@ missingEdges <- function(true_cpdag,lpc_dag){
 
 # This function will calculate all the wrongly oriented edges
 wrongDirection <- function(true_cpdag,lpc_cpdag) {
+  if (is.null(true_cpdag) & is.null(lpc_cpdag)){
+    return(0)
+  }
   total <- 0
   for (i in 1:nrow(true_cpdag)){
     for (j in 1:ncol(true_cpdag)){
@@ -818,6 +836,9 @@ wrongDirection <- function(true_cpdag,lpc_cpdag) {
 
 # This function will calculate all the edges that are directed when they should be undirected
 directed_undirected <- function(true_cpdag,lpc_cpdag) {
+  if (is.null(true_cpdag) & is.null(lpc_cpdag)){
+    return(0)
+  }
   total <- 0
   for (i in 1:nrow(true_cpdag)){
     for (j in 1:ncol(true_cpdag)){
@@ -836,6 +857,9 @@ directed_undirected <- function(true_cpdag,lpc_cpdag) {
 
 # This function will calculate all the edges that are undirected (Estimate) when they should be directed (True)
 undirected_directed <- function(true_cpdag,lpc_cpdag) {
+  if (is.null(true_cpdag) & is.null(lpc_cpdag)){
+    return(0)
+  }
   total <- 0
   for (i in 1:nrow(true_cpdag)){
     for (j in 1:ncol(true_cpdag)){
