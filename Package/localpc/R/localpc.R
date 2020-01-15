@@ -9,20 +9,18 @@
 
 localpc <- function(data=NULL,true_dag=NULL,target,G=NULL,lmax=3,tol=0.01,pop=TRUE,verbose = TRUE,verbose_small=TRUE){
 
-  build <- build_initial_graph(target,true_dag)
-  
-  Ctilde <- G
+  build <- get_neighborhood_list(target,true_dag)
 
   neighbors <- build$neighbors
 
-  skel_res <- pc_skel_loc(dataset = data,C_tilde = Ctilde,
+  skel_res <- pc_skel_loc(dataset = data,C_tilde = G,
                           true_dag=true_dag,neighbors=neighbors,
                           pop = pop,lmax = lmax,verbose = verbose,tol = tol)
 
-  G <- pc_vstruct(G = skel_res$adjacency,S = skel_res$sep_sets,verbose=verbose)
+  G_new <- pc_vstruct(G = skel_res$adjacency,S = skel_res$sep_sets,verbose=verbose)
 
   S <- skel_res$sep_sets
   p_vals_vec <- skel_res$p_vals
 
-  return(list("G"=G,"S"=S,"p_vals"=p_vals_vec))
+  return(list("G"=G_new,"S"=S,"p_vals"=p_vals_vec))
 }

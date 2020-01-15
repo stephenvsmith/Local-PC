@@ -8,7 +8,7 @@
 #' @param true_dag a matrix containing all the information about the true dag
 #'
 
-build_initial_graph <- function(target,true_dag){
+get_neighborhood_list <- function(target,true_dag){
   # Ctilde is our initial graph
   neighbors <- target # Tracks all the neighbors we have to find neighborhoods for (second order neighbors)
 
@@ -25,16 +25,9 @@ build_initial_graph <- function(target,true_dag){
 
   ### List containing the neighbors of each of the target's neighbors
   neighbors_list <- sapply(neighbors,find_neighbors,true_dag,USE.NAMES = TRUE,simplify = FALSE)
-  #neighbors_list2 <- sapply(unique(unlist(neighbors)), find_neighbors,true_dag,USE.NAMES = TRUE,simplify = FALSE)
   names(neighbors_list) <- neighbors
 
-  ### Remaining connections between neighbors of neighbors from different neighborhoods
-  if (length(target)>1){
-    Ctilde <- remaining_edges(target,neighborhood,neighbors_list,Ctilde)
-    Ctilde <- finalize_edges(target,neighborhood,neighbors_list,Ctilde)
-  }
-
-  return(list("Ctilde"=Ctilde,"neighbors"=neighbors_list))
+  return(neighbors_list)
 }
 
 

@@ -34,7 +34,7 @@ pc_skel_setup <- function(dataset,true_dag,C_tilde,
   return(list("p"=p,"C_tilde"=C_tilde,
               "S"=S,"cor.mat"=cor.mat,
               "p.vals"=p.vals,"dataset"=dataset,
-              "true_dag"=true_dag,"neighbors"=neighbors,
+              "true_dag"=true_dag,
               "pop"=pop,"lmax"=lmax,
               "verbose"=verbose,"tol"=tol,
               "n"=n))
@@ -50,7 +50,7 @@ pc_skel_setup <- function(dataset,true_dag,C_tilde,
 #' @param p is the number of nodes in the graph
 
 create_conditioning_sets <- function(p){
-  
+
   # Create the list that we will return with the conditioning sets
   S <- list()
   for (i in 1:p){ # loop through all nodes
@@ -62,7 +62,7 @@ create_conditioning_sets <- function(p){
       S[[i]][[j]] <- NA
     }
   }
-  
+
   return(S)
 }
 
