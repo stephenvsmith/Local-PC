@@ -5,7 +5,7 @@
 ############################################################################################################
 
 pc_skel_setup <- function(dataset,true_dag,C_tilde,
-                          neighbors,pop,lmax,
+                          pop,lmax,
                           verbose,tol){
 
   # number of nodes (Use dataset for sample, true_dag for population)

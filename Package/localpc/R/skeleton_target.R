@@ -6,6 +6,7 @@ skeleton_target <- function(i,var_list){
   if (var_list$verbose) cat("i value is: ",i,"\n")
 
   # Determine adjacent values for possible j
+
   var_list[["jvals"]] <- which(var_list[["C"]][i,] != 0)
 
   ### loop over all adjacent j values
@@ -25,7 +26,7 @@ check_neighbor <- function(j,var_list){
 
   # (i,j) is the pair we are considering
   # adj is the remaining adjacent nodes to i not equal to j
-  adj <- find_neighbors(i,var_list$true_dag)
+  adj <- find_neighbors(var_list$i,var_list$true_dag)
   var_list$adj <- adj[adj!=j]
 
   if (length(var_list$adj)>=var_list$l){ # Makes sure there is a valid amount of adjacent nodes for each step

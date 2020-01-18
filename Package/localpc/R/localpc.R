@@ -9,12 +9,7 @@
 
 localpc <- function(data=NULL,true_dag=NULL,target,G=NULL,lmax=3,tol=0.01,pop=TRUE,verbose = TRUE,verbose_small=TRUE){
 
-  build <- get_neighborhood_list(target,true_dag)
-
-  neighbors <- build$neighbors
-
-  skel_res <- pc_skel_loc(dataset = data,C_tilde = G,
-                          true_dag=true_dag,neighbors=neighbors,
+  skel_res <- pc_skeleton(dataset = data,C_tilde = G,true_dag=true_dag,
                           pop = pop,lmax = lmax,verbose = verbose,tol = tol)
 
   G_new <- pc_vstruct(G = skel_res$adjacency,S = skel_res$sep_sets,verbose=verbose)

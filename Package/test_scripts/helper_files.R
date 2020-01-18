@@ -78,7 +78,7 @@ generate.data.grid <- function(data.grid = data.frame(network = "child",
                                                       high = 1,  # upper bound of variances if continuous, of number of levels if discrete
                                                       scale = TRUE,
                                                       stringsAsFactors = FALSE),
-                               out.dir,
+                               out.dir,sim.dir.name,
                                path.start='~/',
                                verbose = TRUE,
                                var_list=NULL){
@@ -95,9 +95,11 @@ generate.data.grid <- function(data.grid = data.frame(network = "child",
   for (i in 1:nrow(data.grid)){
     
     data.row <- data.grid[i,, drop = FALSE]
-    data.dir <- paste0(out.dir, '/', data.row$network,
-                       '; n = ', data.row$n.obs,
-                       '; c = ', data.row$c.ratio)
+    if (missing(sim.dir.name)){
+      data.dir <- paste0(out.dir, '/', data.row$network,
+                         '; n = ', data.row$n.obs,
+                         '; c = ', data.row$c.ratio)
+    } else data.dir <- sim.dir.name
     dir.check(data.dir)
     write.txt <- function(obj, txt, col.names = FALSE, row.names = FALSE){  # function to write obj to data.dir
       write.table(obj, paste0(data.dir, sprintf('/%s.txt', txt)),
