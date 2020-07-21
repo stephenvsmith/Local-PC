@@ -7,15 +7,21 @@
 #'
 #' @export
 
-localpc <- function(data=NULL,true_dag=NULL,target,G=NULL,lmax=3,tol=0.01,pop=TRUE,verbose = TRUE,verbose_small=TRUE){
+localpc <- function(data=NULL,true_dag=NULL,target,G=NULL,lmax=3,tol=0.01,
+                    pop=TRUE,verbose = TRUE,verbose_small=TRUE,
+                    orient_v=TRUE,fci_step1=FALSE){
 
   skel_res <- pc_skeleton(dataset = data,C_tilde = G,true_dag=true_dag,
-                          pop = pop,lmax = lmax,verbose = verbose,tol = tol)
-
-  G_new <- pc_vstruct(G = skel_res$adjacency,S = skel_res$sep_sets,verbose=verbose)
+                          pop = pop,lmax = lmax,fci_step1 = fci_step1,
+                          verbose = verbose,verbose_small = verbose_small,tol = tol)
+  if (orient_v){
+    G_new <- pc_vstruct(G = skel_res$adjacency,S = skel_res$sep_sets,verbose=verbose)
+  } else {
+    G_new <- skel_res$adjacency
+  }
 
   S <- skel_res$sep_sets
   p_vals_vec <- skel_res$p_vals
 
-  return(list("G"=G_new,"S"=S,"p_vals"=p_vals_vec))
+  return(list("G"=G_new,"S"=S,"p_vals"=p_vals_vec,"num_tests"=skel_res$num_tests))
 }

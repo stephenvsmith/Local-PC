@@ -113,6 +113,8 @@ get_pval <- function(var_list){
     }
   }
 
+  var_list$num_tests <- var_list$num_tests + 1
+
   return(var_list)
 }
 

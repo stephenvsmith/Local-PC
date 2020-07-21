@@ -25,9 +25,17 @@ check_neighbor <- function(j,var_list){
   if (var_list$verbose) cat("j value is: ",j,"\n")
 
   # (i,j) is the pair we are considering
-  # adj is the remaining adjacent nodes to i not equal to j
-  adj <- find_neighbors(var_list$i,var_list$true_dag)
-  var_list$adj <- adj[adj!=j]
+  # adj is the remaining adjacent nodes to i or j (not including i or j of course)
+  
+  if (var_list$fci_step1){
+    neighbors_dag <- var_list$C
+  } else {
+    neighbors_dag <- var_list$true_dag
+  }
+  
+  adj <- unique(c(find_neighbors(var_list$i,neighbors_dag),
+                  find_neighbors(var_list$j,neighbors_dag)))
+  var_list$adj <- setdiff(adj,c(var_list$i,var_list$j))
 
   if (length(var_list$adj)>=var_list$l){ # Makes sure there is a valid amount of adjacent nodes for each step
 

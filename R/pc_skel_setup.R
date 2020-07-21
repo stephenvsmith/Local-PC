@@ -6,7 +6,7 @@
 
 pc_skel_setup <- function(dataset,true_dag,C_tilde,
                           pop,lmax,
-                          verbose,tol){
+                          verbose,verbose_small,tol){
 
   # number of nodes (Use dataset for sample, true_dag for population)
   p <- ifelse(pop,ncol(true_dag),ncol(dataset))
@@ -34,9 +34,9 @@ pc_skel_setup <- function(dataset,true_dag,C_tilde,
   return(list("p"=p,"C_tilde"=C_tilde,
               "S"=S,"cor.mat"=cor.mat,
               "p.vals"=p.vals,"dataset"=dataset,
-              "true_dag"=true_dag,
+              "true_dag"=true_dag,"num_tests"=0,
               "pop"=pop,"lmax"=lmax,
-              "verbose"=verbose,"tol"=tol,
+              "verbose"=verbose,"verbose_small"=verbose_small,"tol"=tol,
               "n"=n))
 }
 

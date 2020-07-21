@@ -8,7 +8,7 @@ test_results <- function(var_list){
     if (is.null(var_list$kvals)){
 
       ### Fail to reject the null hypothesis (independence test)
-      if (var_list$verbose){
+      if (var_list$verbose_small){
         cat("--------------------------------------\n")
         cat("The p-value is: ",var_list$pval,"\n")
         cat("Removing edge from ",var_list$i," to ",var_list$j,"\n")
@@ -30,7 +30,7 @@ test_results <- function(var_list){
 
       # Also fail to reject the null hypothesis (conditional independence)
 
-      if (var_list$verbose){
+      if (var_list$verbose_small){
         cat("--------------------------------------\n")
         cat("The p-value is: ",var_list$pval,"\n")
         cat("Removing edge from ",var_list$i," to ",var_list$j,"\n")
