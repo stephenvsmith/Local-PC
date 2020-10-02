@@ -49,12 +49,28 @@ pc_pop_get_skeleton_cpp <- function(var_list) {
     .Call(`_LocalPC_pc_pop_get_skeleton_cpp`, var_list)
 }
 
-pc_pop_skeleton_cpp <- function(true_dag, names, lmax = 3L, verbose = TRUE, verbose_small = TRUE) {
-    .Call(`_LocalPC_pc_pop_skeleton_cpp`, true_dag, names, lmax, verbose, verbose_small)
-}
-
 test <- function(final, remove) {
     .Call(`_LocalPC_test`, final, remove)
+}
+
+get_adjacent <- function(M, i) {
+    .Call(`_LocalPC_get_adjacent`, M, i)
+}
+
+get_nonadjacent <- function(M, i) {
+    .Call(`_LocalPC_get_nonadjacent`, M, i)
+}
+
+check_membership <- function(x, i) {
+    .Call(`_LocalPC_check_membership`, x, i)
+}
+
+get_v_structures <- function(L) {
+    .Call(`_LocalPC_get_v_structures`, L)
+}
+
+pc_pop_skeleton_cpp <- function(true_dag, names, lmax = 3L, verbose = TRUE, verbose_small = TRUE) {
+    .Call(`_LocalPC_pc_pop_skeleton_cpp`, true_dag, names, lmax, verbose, verbose_small)
 }
 
 rcpp_hello_world <- function() {

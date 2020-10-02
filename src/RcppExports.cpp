@@ -159,6 +159,65 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// test
+NumericVector test(NumericVector final, NumericVector remove);
+RcppExport SEXP _LocalPC_test(SEXP finalSEXP, SEXP removeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type final(finalSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type remove(removeSEXP);
+    rcpp_result_gen = Rcpp::wrap(test(final, remove));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_adjacent
+NumericVector get_adjacent(NumericMatrix M, int i);
+RcppExport SEXP _LocalPC_get_adjacent(SEXP MSEXP, SEXP iSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type M(MSEXP);
+    Rcpp::traits::input_parameter< int >::type i(iSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_adjacent(M, i));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_nonadjacent
+NumericVector get_nonadjacent(NumericMatrix M, int i);
+RcppExport SEXP _LocalPC_get_nonadjacent(SEXP MSEXP, SEXP iSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type M(MSEXP);
+    Rcpp::traits::input_parameter< int >::type i(iSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_nonadjacent(M, i));
+    return rcpp_result_gen;
+END_RCPP
+}
+// check_membership
+bool check_membership(NumericVector x, int i);
+RcppExport SEXP _LocalPC_check_membership(SEXP xSEXP, SEXP iSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type i(iSEXP);
+    rcpp_result_gen = Rcpp::wrap(check_membership(x, i));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_v_structures
+List get_v_structures(List L);
+RcppExport SEXP _LocalPC_get_v_structures(SEXP LSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type L(LSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_v_structures(L));
+    return rcpp_result_gen;
+END_RCPP
+}
 // pc_pop_skeleton_cpp
 List pc_pop_skeleton_cpp(NumericMatrix true_dag, StringVector names, int lmax, bool verbose, bool verbose_small);
 RcppExport SEXP _LocalPC_pc_pop_skeleton_cpp(SEXP true_dagSEXP, SEXP namesSEXP, SEXP lmaxSEXP, SEXP verboseSEXP, SEXP verbose_smallSEXP) {
@@ -171,18 +230,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose_small(verbose_smallSEXP);
     rcpp_result_gen = Rcpp::wrap(pc_pop_skeleton_cpp(true_dag, names, lmax, verbose, verbose_small));
-    return rcpp_result_gen;
-END_RCPP
-}
-// test
-NumericVector test(NumericVector final, NumericVector remove);
-RcppExport SEXP _LocalPC_test(SEXP finalSEXP, SEXP removeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type final(finalSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type remove(removeSEXP);
-    rcpp_result_gen = Rcpp::wrap(test(final, remove));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -210,8 +257,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_LocalPC_change_S_0", (DL_FUNC) &_LocalPC_change_S_0, 3},
     {"_LocalPC_check_separation", (DL_FUNC) &_LocalPC_check_separation, 11},
     {"_LocalPC_pc_pop_get_skeleton_cpp", (DL_FUNC) &_LocalPC_pc_pop_get_skeleton_cpp, 1},
-    {"_LocalPC_pc_pop_skeleton_cpp", (DL_FUNC) &_LocalPC_pc_pop_skeleton_cpp, 5},
     {"_LocalPC_test", (DL_FUNC) &_LocalPC_test, 2},
+    {"_LocalPC_get_adjacent", (DL_FUNC) &_LocalPC_get_adjacent, 2},
+    {"_LocalPC_get_nonadjacent", (DL_FUNC) &_LocalPC_get_nonadjacent, 2},
+    {"_LocalPC_check_membership", (DL_FUNC) &_LocalPC_check_membership, 2},
+    {"_LocalPC_get_v_structures", (DL_FUNC) &_LocalPC_get_v_structures, 1},
+    {"_LocalPC_pc_pop_skeleton_cpp", (DL_FUNC) &_LocalPC_pc_pop_skeleton_cpp, 5},
     {"_LocalPC_rcpp_hello_world", (DL_FUNC) &_LocalPC_rcpp_hello_world, 0},
     {NULL, NULL, 0}
 };

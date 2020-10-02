@@ -13,3 +13,4 @@ Results/
 *.gz
 *.out
 *.DS_Store*
+.Rproj.user
