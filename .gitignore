@@ -12,3 +12,4 @@ Results/
 *.nav
 *.gz
 *.out
+*.DS_Store*

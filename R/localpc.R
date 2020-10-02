@@ -25,3 +25,10 @@ localpc <- function(data=NULL,true_dag=NULL,target,G=NULL,lmax=3,tol=0.01,
 
   return(list("G"=G_new,"S"=S,"p_vals"=p_vals_vec,"num_tests"=skel_res$num_tests))
 }
+
+
+localpc_cpp <- function(data=NULL,true_dag=NULL,target,G=NULL,lmax=3,tol=0.01,
+                        pop=TRUE,verbose = TRUE,verbose_small=TRUE,
+                        orient_v=TRUE,fci_step1=FALSE){
+
+}
