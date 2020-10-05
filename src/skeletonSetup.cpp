@@ -1,0 +1,53 @@
+#include <Rcpp.h>
+using namespace Rcpp;
+
+/*
+ * This function sets up the nested lists that will hold separating sets
+ */
+List create_conditioning_sets_cpp(int p){
+  List S(p);
+  for (int i=0;i<p;++i){
+    List sublist = List(p);
+    for (int j=0;j<p;++j){
+      sublist[j] = NA_REAL;
+    }
+    S[i] = sublist;
+  }
+  return S;
+}
+
+/*
+ * The following function sets up the basic data structures for the skeleton algorithm
+ */
+
+List pc_pop_skeleton_setup_cpp(NumericMatrix true_dag,StringVector names,int lmax,bool verbose){
+  // Number of nodes
+  int p = 0;
+  p = true_dag.nrow();
+  
+  if (verbose){
+    Rcout << "There are " << p << " nodes in the DAG.\n";
+  }
+  
+  NumericMatrix C_tilde(p,p);
+  std::fill(C_tilde.begin(), C_tilde.end(), 1);
+  C_tilde.fill_diag(0);
+  if (verbose){
+    Rcout << "Our starting matrix is " << C_tilde.nrow() << "x" << C_tilde.ncol() << ".\n";
+  }
+  
+  List S = create_conditioning_sets_cpp(p);
+  
+  std::vector<double> p_vals;
+  
+  return List::create(
+    _["p"] = p,
+    _["C_tilde"]=C_tilde,
+    _["true_dag"]=true_dag,
+    _["names"]=names,
+    _["lmax"]=lmax,
+    _["S"]=S,
+    _["verbose"]=verbose,
+    _["p_vals"]=p_vals);
+  
+}

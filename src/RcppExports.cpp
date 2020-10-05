@@ -5,149 +5,6 @@
 
 using namespace Rcpp;
 
-// create_conditioning_sets_cpp
-List create_conditioning_sets_cpp(int p);
-RcppExport SEXP _LocalPC_create_conditioning_sets_cpp(SEXP pSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type p(pSEXP);
-    rcpp_result_gen = Rcpp::wrap(create_conditioning_sets_cpp(p));
-    return rcpp_result_gen;
-END_RCPP
-}
-// pc_pop_skeleton_setup_cpp
-List pc_pop_skeleton_setup_cpp(NumericMatrix true_dag, StringVector names, int lmax, bool verbose);
-RcppExport SEXP _LocalPC_pc_pop_skeleton_setup_cpp(SEXP true_dagSEXP, SEXP namesSEXP, SEXP lmaxSEXP, SEXP verboseSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type true_dag(true_dagSEXP);
-    Rcpp::traits::input_parameter< StringVector >::type names(namesSEXP);
-    Rcpp::traits::input_parameter< int >::type lmax(lmaxSEXP);
-    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(pc_pop_skeleton_setup_cpp(true_dag, names, lmax, verbose));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_neighbors_from_dag
-NumericVector get_neighbors_from_dag(int i, int p, NumericMatrix true_dag);
-RcppExport SEXP _LocalPC_get_neighbors_from_dag(SEXP iSEXP, SEXP pSEXP, SEXP true_dagSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type i(iSEXP);
-    Rcpp::traits::input_parameter< int >::type p(pSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type true_dag(true_dagSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_neighbors_from_dag(i, p, true_dag));
-    return rcpp_result_gen;
-END_RCPP
-}
-// combn_cpp
-NumericMatrix combn_cpp(NumericVector x, int l);
-RcppExport SEXP _LocalPC_combn_cpp(SEXP xSEXP, SEXP lSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type l(lSEXP);
-    rcpp_result_gen = Rcpp::wrap(combn_cpp(x, l));
-    return rcpp_result_gen;
-END_RCPP
-}
-// print_vector_elements
-void print_vector_elements(NumericVector v, StringVector names, String opening, String closing);
-RcppExport SEXP _LocalPC_print_vector_elements(SEXP vSEXP, SEXP namesSEXP, SEXP openingSEXP, SEXP closingSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type v(vSEXP);
-    Rcpp::traits::input_parameter< StringVector >::type names(namesSEXP);
-    Rcpp::traits::input_parameter< String >::type opening(openingSEXP);
-    Rcpp::traits::input_parameter< String >::type closing(closingSEXP);
-    print_vector_elements(v, names, opening, closing);
-    return R_NilValue;
-END_RCPP
-}
-// print_vector_elements_nonames
-void print_vector_elements_nonames(NumericVector v, String opening, String closing, String sep);
-RcppExport SEXP _LocalPC_print_vector_elements_nonames(SEXP vSEXP, SEXP openingSEXP, SEXP closingSEXP, SEXP sepSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type v(vSEXP);
-    Rcpp::traits::input_parameter< String >::type opening(openingSEXP);
-    Rcpp::traits::input_parameter< String >::type closing(closingSEXP);
-    Rcpp::traits::input_parameter< String >::type sep(sepSEXP);
-    print_vector_elements_nonames(v, opening, closing, sep);
-    return R_NilValue;
-END_RCPP
-}
-// print_matrix
-void print_matrix(NumericMatrix m);
-RcppExport SEXP _LocalPC_print_matrix(SEXP mSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type m(mSEXP);
-    print_matrix(m);
-    return R_NilValue;
-END_RCPP
-}
-// print_S_vals
-void print_S_vals(List S);
-RcppExport SEXP _LocalPC_print_S_vals(SEXP SSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type S(SSEXP);
-    print_S_vals(S);
-    return R_NilValue;
-END_RCPP
-}
-// change_S
-List change_S(List S, int i, int j, NumericVector sep);
-RcppExport SEXP _LocalPC_change_S(SEXP SSEXP, SEXP iSEXP, SEXP jSEXP, SEXP sepSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type S(SSEXP);
-    Rcpp::traits::input_parameter< int >::type i(iSEXP);
-    Rcpp::traits::input_parameter< int >::type j(jSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type sep(sepSEXP);
-    rcpp_result_gen = Rcpp::wrap(change_S(S, i, j, sep));
-    return rcpp_result_gen;
-END_RCPP
-}
-// change_S_0
-List change_S_0(List S, int i, int j);
-RcppExport SEXP _LocalPC_change_S_0(SEXP SSEXP, SEXP iSEXP, SEXP jSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type S(SSEXP);
-    Rcpp::traits::input_parameter< int >::type i(iSEXP);
-    Rcpp::traits::input_parameter< int >::type j(jSEXP);
-    rcpp_result_gen = Rcpp::wrap(change_S_0(S, i, j));
-    return rcpp_result_gen;
-END_RCPP
-}
-// check_separation
-void check_separation(const int& l, const int& i, const int& j, const NumericMatrix& kvals, Function get_pval, NumericVector& sep, NumericMatrix true_dag, const StringVector& names, NumericMatrix C, List S, double& pval);
-RcppExport SEXP _LocalPC_check_separation(SEXP lSEXP, SEXP iSEXP, SEXP jSEXP, SEXP kvalsSEXP, SEXP get_pvalSEXP, SEXP sepSEXP, SEXP true_dagSEXP, SEXP namesSEXP, SEXP CSEXP, SEXP SSEXP, SEXP pvalSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const int& >::type l(lSEXP);
-    Rcpp::traits::input_parameter< const int& >::type i(iSEXP);
-    Rcpp::traits::input_parameter< const int& >::type j(jSEXP);
-    Rcpp::traits::input_parameter< const NumericMatrix& >::type kvals(kvalsSEXP);
-    Rcpp::traits::input_parameter< Function >::type get_pval(get_pvalSEXP);
-    Rcpp::traits::input_parameter< NumericVector& >::type sep(sepSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type true_dag(true_dagSEXP);
-    Rcpp::traits::input_parameter< const StringVector& >::type names(namesSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type C(CSEXP);
-    Rcpp::traits::input_parameter< List >::type S(SSEXP);
-    Rcpp::traits::input_parameter< double& >::type pval(pvalSEXP);
-    check_separation(l, i, j, kvals, get_pval, sep, true_dag, names, C, S, pval);
-    return R_NilValue;
-END_RCPP
-}
 // pc_pop_get_skeleton_cpp
 List pc_pop_get_skeleton_cpp(List var_list);
 RcppExport SEXP _LocalPC_pc_pop_get_skeleton_cpp(SEXP var_listSEXP) {
@@ -159,68 +16,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// test
-NumericVector test(NumericVector final, NumericVector remove);
-RcppExport SEXP _LocalPC_test(SEXP finalSEXP, SEXP removeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type final(finalSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type remove(removeSEXP);
-    rcpp_result_gen = Rcpp::wrap(test(final, remove));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_adjacent
-NumericVector get_adjacent(NumericMatrix M, int i);
-RcppExport SEXP _LocalPC_get_adjacent(SEXP MSEXP, SEXP iSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int >::type i(iSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_adjacent(M, i));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_nonadjacent
-NumericVector get_nonadjacent(NumericMatrix M, int i);
-RcppExport SEXP _LocalPC_get_nonadjacent(SEXP MSEXP, SEXP iSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type M(MSEXP);
-    Rcpp::traits::input_parameter< int >::type i(iSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_nonadjacent(M, i));
-    return rcpp_result_gen;
-END_RCPP
-}
-// check_membership
-bool check_membership(NumericVector x, int i);
-RcppExport SEXP _LocalPC_check_membership(SEXP xSEXP, SEXP iSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type i(iSEXP);
-    rcpp_result_gen = Rcpp::wrap(check_membership(x, i));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_v_structures
-List get_v_structures(List L);
-RcppExport SEXP _LocalPC_get_v_structures(SEXP LSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type L(LSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_v_structures(L));
-    return rcpp_result_gen;
-END_RCPP
-}
-// pc_pop_skeleton_cpp
-List pc_pop_skeleton_cpp(NumericMatrix true_dag, StringVector names, int lmax, bool verbose, bool verbose_small);
-RcppExport SEXP _LocalPC_pc_pop_skeleton_cpp(SEXP true_dagSEXP, SEXP namesSEXP, SEXP lmaxSEXP, SEXP verboseSEXP, SEXP verbose_smallSEXP) {
+// pc_pop_cpp
+List pc_pop_cpp(NumericMatrix true_dag, StringVector names, int lmax, bool verbose, bool verbose_small);
+RcppExport SEXP _LocalPC_pc_pop_cpp(SEXP true_dagSEXP, SEXP namesSEXP, SEXP lmaxSEXP, SEXP verboseSEXP, SEXP verbose_smallSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -229,7 +27,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type lmax(lmaxSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose_small(verbose_smallSEXP);
-    rcpp_result_gen = Rcpp::wrap(pc_pop_skeleton_cpp(true_dag, names, lmax, verbose, verbose_small));
+    rcpp_result_gen = Rcpp::wrap(pc_pop_cpp(true_dag, names, lmax, verbose, verbose_small));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -245,24 +43,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_LocalPC_create_conditioning_sets_cpp", (DL_FUNC) &_LocalPC_create_conditioning_sets_cpp, 1},
-    {"_LocalPC_pc_pop_skeleton_setup_cpp", (DL_FUNC) &_LocalPC_pc_pop_skeleton_setup_cpp, 4},
-    {"_LocalPC_get_neighbors_from_dag", (DL_FUNC) &_LocalPC_get_neighbors_from_dag, 3},
-    {"_LocalPC_combn_cpp", (DL_FUNC) &_LocalPC_combn_cpp, 2},
-    {"_LocalPC_print_vector_elements", (DL_FUNC) &_LocalPC_print_vector_elements, 4},
-    {"_LocalPC_print_vector_elements_nonames", (DL_FUNC) &_LocalPC_print_vector_elements_nonames, 4},
-    {"_LocalPC_print_matrix", (DL_FUNC) &_LocalPC_print_matrix, 1},
-    {"_LocalPC_print_S_vals", (DL_FUNC) &_LocalPC_print_S_vals, 1},
-    {"_LocalPC_change_S", (DL_FUNC) &_LocalPC_change_S, 4},
-    {"_LocalPC_change_S_0", (DL_FUNC) &_LocalPC_change_S_0, 3},
-    {"_LocalPC_check_separation", (DL_FUNC) &_LocalPC_check_separation, 11},
     {"_LocalPC_pc_pop_get_skeleton_cpp", (DL_FUNC) &_LocalPC_pc_pop_get_skeleton_cpp, 1},
-    {"_LocalPC_test", (DL_FUNC) &_LocalPC_test, 2},
-    {"_LocalPC_get_adjacent", (DL_FUNC) &_LocalPC_get_adjacent, 2},
-    {"_LocalPC_get_nonadjacent", (DL_FUNC) &_LocalPC_get_nonadjacent, 2},
-    {"_LocalPC_check_membership", (DL_FUNC) &_LocalPC_check_membership, 2},
-    {"_LocalPC_get_v_structures", (DL_FUNC) &_LocalPC_get_v_structures, 1},
-    {"_LocalPC_pc_pop_skeleton_cpp", (DL_FUNC) &_LocalPC_pc_pop_skeleton_cpp, 5},
+    {"_LocalPC_pc_pop_cpp", (DL_FUNC) &_LocalPC_pc_pop_cpp, 5},
     {"_LocalPC_rcpp_hello_world", (DL_FUNC) &_LocalPC_rcpp_hello_world, 0},
     {NULL, NULL, 0}
 };

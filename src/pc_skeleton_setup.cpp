@@ -1,262 +1,10 @@
 #include <Rcpp.h>
+#include "printFunctions.h"
+#include "trueDAGinfo.h"
+#include "skeletonSetup.h"
+#include "skeletonHelpers.h"
+#include "vStructHelpers.h"
 using namespace Rcpp;
-
-/*
- * This function sets up the nested lists that will hold separating sets
- */
-// [[Rcpp::export]]
-List create_conditioning_sets_cpp(int p){
-  List S(p);
-  for (int i=0;i<p;++i){
-    List sublist = List(p);
-    for (int j=0;j<p;++j){
-      sublist[j] = NA_REAL;
-    }
-    S[i] = sublist;
-  }
-  return S;
-}
-
-/*
- * The following function sets up the basic data structures for the skeleton algorithm
- */
-// [[Rcpp::export]]
-List pc_pop_skeleton_setup_cpp(NumericMatrix true_dag,StringVector names,int lmax,bool verbose){
-  // Number of nodes
-  int p = 0;
-  p = true_dag.nrow();
-
-  if (verbose){
-    Rcout << "There are " << p << " nodes in the DAG.\n";
-  }
-
-  NumericMatrix C_tilde(p,p);
-  std::fill(C_tilde.begin(), C_tilde.end(), 1);
-  C_tilde.fill_diag(0);
-  if (verbose){
-    Rcout << "Our starting matrix is " << C_tilde.nrow() << "x" << C_tilde.ncol() << ".\n";
-  }
-
-  List S = create_conditioning_sets_cpp(p);
-
-  std::vector<double> p_vals;
-
-  return List::create(
-    _["p"] = p,
-    _["C_tilde"]=C_tilde,
-    _["true_dag"]=true_dag,
-    _["names"]=names,
-    _["lmax"]=lmax,
-    _["S"]=S,
-    _["verbose"]=verbose,
-    _["p_vals"]=p_vals);
-
-}
-
-
-/*
- * This function helps us to get the neighbors from the true DAG
- */
-// [[Rcpp::export]]
-NumericVector get_neighbors_from_dag(int i,int p,NumericMatrix true_dag){
-  NumericVector neighbors;
-  NumericVector parents;
-  NumericVector children;
-
-  for (int j = 0;j<p;++j){
-    if (true_dag(j,i)==1){
-      parents.push_back(j);
-      //Rcout << "Call from get_neighbors_from_dag. Node " << j << " is a parent.\n";
-    } else if (true_dag(i,j)==1){
-      children.push_back(j);
-      //Rcout << "Call from get_neighbors_from_dag. Node " << j << " is a child.\n";
-    }
-  }
-
-  NumericVector potential_spouses;
-  int current_val;
-  for (NumericVector::iterator it = children.begin(); it != children.end(); ++it){
-    //Rcout << "Call from get_neighbors_from_dag. We are evaluating the following child: " << *it << std::endl;
-    for (int j = 0; j<p; ++j){
-      current_val = true_dag(j,*it);
-      if (current_val == 1 & i != j){
-        potential_spouses.push_back(j);
-        //Rcout << "Call from get_neighbors_from_dag. Node " << j << " is a potential spouse.\n";
-      }
-    }
-  }
-
-  neighbors = union_(parents,children);
-  neighbors = union_(neighbors,potential_spouses);
-
-  return neighbors;
-}
-
-/*
- * This function returns a vector showing the current graph edges coming from node i
- */
-NumericVector get_current_edges(int i,int p,NumericMatrix graph){
-  NumericVector current_edges;
-  for (int j=0;j<p;++j){
-    if (graph(i,j)==1){
-      current_edges.push_back(j);
-    }
-  }
-  return current_edges;
-}
-
-/*
- * This function generates all possible combinations of a vector x
- */
-// [[Rcpp::export]]
-NumericMatrix combn_cpp(NumericVector x,int l){
-
-  NumericMatrix result;
-  if (l==0){
-    result = NumericMatrix(1,1);
-    result(0,0) = NA_REAL;
-    return result;
-  } else if (l==1){
-    result = NumericMatrix(1,1);
-    result(0,0) = x(0);
-    return result;
-  } else if (l>1) {
-    Function f("combn");
-    result = f(Named("x")=x,_["m"]=l);
-    return result;
-  } else {
-    Rcout << "The value of l is negative: " << l << std::endl;
-  }
-
-  return result;
-}
-
-// [[Rcpp::export]]
-void print_vector_elements(NumericVector v,StringVector names, String opening="",String closing=""){
-  int l = v.length();
-  Rcout << opening.get_cstring();
-  for (int i = 0;i<l;++i) {
-    Rcout << names(v(i)) << " ";
-  }
-  Rcout << closing.get_cstring();
-}
-
-// [[Rcpp::export]]
-void print_vector_elements_nonames(NumericVector v,String opening="",String closing="",String sep=" "){
-  int l = v.length();
-  Rcout << opening.get_cstring();
-  for (int i = 0;i<l;++i) {
-    Rcout << v(i) << sep.get_cstring();
-  }
-  Rcout << closing.get_cstring();
-}
-
-// [[Rcpp::export]]
-void print_matrix(NumericMatrix m){
-  int n = m.nrow();
-  int p = m.ncol();
-  String ending;
-  for (int i = 0;i<n;++i){
-    for (int j = 0;j<p;++j){
-      if (j==p-1){
-        ending = "\n";
-      } else{
-        ending = " ";
-      }
-      Rcout << m(i,j) << ending.get_cstring();
-    }
-  }
-}
-
-// [[Rcpp::export]]
-void print_S_vals(List S){
-  List sublist;
-  for (int i=0;i<S.length();++i){
-    sublist = S[i];
-    for (int j=0;j<sublist.length();++j){
-      Rcout << "S[[" << i << "]][[" << j << "]] = ";
-      print_vector_elements_nonames(sublist[j]);
-      Rcout << " ";
-    }
-    Rcout << std::endl;
-  }
-}
-
-/*
- * This function helps us to add a separating set for nodes i and j
- */
-// [[Rcpp::export]]
-List change_S(List S,int i,int j,NumericVector sep){
-  NumericVector sep_new;
-  sep_new = clone(sep);
-  // Rcout << "S before:\n";
-  // print_S_vals(S);
-  List sublist;
-  sublist = S[i];
-  sublist[j] = sep_new;
-  S[i] = sublist;
-  // Rcout << "S after:\n";
-  // print_S_vals(S);
-
-  return S;
-}
-
-/*
- * Allows us to change S to indicate that nodes i and j are separated without a separating set
- */
-// [[Rcpp::export]]
-List change_S_0(List S,int i,int j){
-
-  // Rcout << "S before:\n";
-  // print_S_vals(S);
-  List sublist0;
-  sublist0 = S[i];
-  sublist0[j] = -1;
-  S[i] = sublist0;
-  // Rcout << "S after:\n";
-  // print_S_vals(S);
-
-  return S;
-}
-
-// [[Rcpp::export]]
-void check_separation(const int &l,const int &i,const int &j,const NumericMatrix &kvals,Function get_pval,NumericVector &sep,NumericMatrix true_dag,const StringVector &names,NumericMatrix C,List S,double &pval){
-  int k;
-  bool keep_checking_k;
-
-  if (l == 0){
-    sep = NA_REAL;
-    pval = as<double>(get_pval(i,j,true_dag,names));
-    //Rcout << "The p-value is " << pval << std::endl;
-    if (pval == 1){
-      change_S_0(S,i,j);
-      change_S_0(S,j,i);
-
-      C(i,j) = 0;
-      C(j,i) = 0;
-    }
-  } else {
-    k = 0;
-    keep_checking_k = true;
-    while (keep_checking_k & (k<kvals.cols())){
-      sep = kvals( _ , k );
-      pval = as<double>(get_pval(i,j,true_dag,names,sep));
-      Rcout << "The p-value is " << pval << std::endl;
-      if (pval==1){
-        Rcout << names(i) << " is separated from " << names(j) << " by node(s):\n";
-        print_vector_elements(sep,names);
-        change_S(S,i,j,sep);
-        change_S(S,j,i,sep);
-        C(i,j) = 0;
-        C(j,i) = 0;
-        keep_checking_k = false;
-        print_matrix(kvals);
-      }
-      ++k;
-    }
-  }
-}
-
 
 // [[Rcpp::export]]
 List pc_pop_get_skeleton_cpp(List var_list){
@@ -320,13 +68,15 @@ List pc_pop_get_skeleton_cpp(List var_list){
             }
             kvals = combn_cpp(neighbors,l);
 
-            check_separation(l,i,j,kvals,get_pval,sep,true_dag,names,C,S,pval);
+            check_separation(l,i,j,kvals,get_pval,sep,true_dag,names,C,S,pval,verbose);
 
-            Rcout << "l: " << l << " | i: " << i << " | j: " << j << " | k: ";
-            print_vector_elements(sep,names);
-            Rcout << " | p-val: " << pval;
-            Rcout << std::endl;
-            //print_S_vals(S);
+            if (verbose){
+              Rcout << "l: " << l << " | i: " << i << " | j: " << j << " | k: ";
+              print_vector_elements(sep,names);
+              Rcout << " | p-val: " << pval;
+              Rcout << std::endl;
+              //print_S_vals(S);
+            }
             ++num_tests;
           }
         }
@@ -335,72 +85,25 @@ List pc_pop_get_skeleton_cpp(List var_list){
     }
 
   }
-  Rcout << "The final C matrix:\n";
-  print_matrix(C);
-  Rcout << "Conclusion of algorithm.\n";
+  if (verbose){
+    Rcout << "The final C matrix:\n";
+    print_matrix(C);
+    Rcout << "Conclusion of algorithm.\n";
+  }
 
   return List::create(
     _["C"]=C,
-    _["S"]=S
+    _["S"]=S,
+    _["NumTests"]=num_tests,
+    _["verbose"]=verbose
   );
 }
 
-//[[Rcpp::export]]
-NumericVector test(NumericVector final,NumericVector remove){
-  return setdiff(final,remove);
-}
-
-// [[Rcpp::export]]
-NumericVector get_adjacent(NumericMatrix M,int i){
-  NumericVector final;
-  int p = M.ncol();
-  
-  for (int j=0;j<p;++j){
-    if (M(i,j)!=0){
-      final.push_back(j);
-    }
-  }
-  
-  return final;
-}
-
-// [[Rcpp::export]]
-NumericVector get_nonadjacent(NumericMatrix M,int i){
-  NumericVector final;
-  int p = M.ncol();
-  
-  for (int j=0;j<p;++j){
-    if (M(i,j)==0 && j!=i){
-      final.push_back(j);
-    }
-  }
-  
-  return final;
-}
-
-// [[Rcpp::export]]
-bool check_membership(NumericVector x,int i){
-  
-  NumericVector::iterator it = x.begin();
-  int j;
-  
-  for (;it!=x.end();++it){
-    j = *it;
-    if (i == j){
-      return true;
-    }
-  }
-  
-  return false;
-}
-
-
-// [[Rcpp::export]]
 List get_v_structures(List L) {
   
-  Rcout << "Obtaining values from previous step.\n";
   List S = L["S"];
   NumericMatrix G = L["C"];
+  bool verbose = L["verbose"];
   
   int p = G.ncol();
   int j;
@@ -416,13 +119,16 @@ List get_v_structures(List L) {
   NumericVector k_vals;
   
   List sublist;
-  Rcout << "Starting loops.\n";
-  
+  if (verbose){
+    Rcout << "Beginning loops to find v-structures.\n";
+  }
   for (int i=0;i<p;++i){
     placeholder = G(i,_);
     no_neighbors = (all(placeholder==0)).is_true();
     if (!no_neighbors){
-      Rcout << "i: " << i << std::endl;
+      if (verbose){
+        Rcout << "i: " << i << std::endl;
+      }
       i_adj = get_adjacent(G,i);
       j_vals = get_nonadjacent(G,i);
       
@@ -433,7 +139,9 @@ List get_v_structures(List L) {
         j_invalid = (all(placeholder==0)).is_true();
         j_invalid = j_invalid || G(j,i)==1 || j > i;
         if (!j_invalid){
-          Rcout << "j: " << j << std::endl;
+          if (verbose){
+            Rcout << "j: " << j << std::endl;
+          }
           j_adj = get_adjacent(G,j);
           k_vals = intersect(i_adj,j_adj);
           // If there are no common neighbors, move to next j
@@ -441,13 +149,16 @@ List get_v_structures(List L) {
             // We loop through all of the common neighbors
             for (NumericVector::iterator it2 = k_vals.begin();it2!=k_vals.end();++it2){
               k = *it2;
-              Rcout << "k: " << k << std::endl;
+              if (verbose){
+                Rcout << "k: " << k << std::endl; 
+              }
               sublist = S[i];
               if (!check_membership(sublist[j],k)){
-                Rcout << "Separation Set: ";
-                print_vector_elements_nonames(sublist[j]);
-                Rcout << "V-Structure: " << i << "->" << k << "<-" << j << std::endl;
-                
+                if (verbose){
+                  Rcout << "Separation Set: ";
+                  print_vector_elements_nonames(sublist[j]);
+                  Rcout << "V-Structure: " << i << "->" << k << "<-" << j << std::endl; 
+                }
                 G(k,i) = 0;
                 G(k,j) = 0;
               }
@@ -460,32 +171,18 @@ List get_v_structures(List L) {
   
   
   return List::create(
-    _["G"]=G
+    _["G"]=G,
+    _["NumTests"]=L["NumTests"]
   );
 }
 
 // [[Rcpp::export]]
-List pc_pop_skeleton_cpp(NumericMatrix true_dag,StringVector names,int lmax=3,bool verbose=true,bool verbose_small=true){
+List pc_pop_cpp(NumericMatrix true_dag,StringVector names,int lmax=3,bool verbose=true,bool verbose_small=true){
   
   List var_list = pc_pop_skeleton_setup_cpp(true_dag,names,lmax,verbose);
   
   List final_skeleton_list = pc_pop_get_skeleton_cpp(var_list);
   return get_v_structures(final_skeleton_list);
 }
-
-// // [[Rcpp::export]]
-// List pc_skeleton_setup_cpp(DataFrame data,NumericMatrix true_dag,NumericMatrix C_tilde,bool pop, int lmax,bool verbose,bool verbose_small,double tol){
-//   // Number of nodes
-//   int p = 0;
-//   if (pop){
-//     p = true_dag.nrow();
-//     std::fill(C_tilde.begin(), C_tilde.end(), 1);
-//     C_tilde.fill_diag(0);
-//   } else {
-//     p = data.ncol();
-//   }
-//
-//   return List::create(p,C_tilde);
-// }
 
 
