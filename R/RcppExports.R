@@ -9,7 +9,3 @@ pc_pop_cpp <- function(true_dag, names, lmax = 3L, verbose = TRUE, verbose_small
     .Call(`_LocalPC_pc_pop_cpp`, true_dag, names, lmax, verbose, verbose_small)
 }
 
-rcpp_hello_world <- function() {
-    .Call(`_LocalPC_rcpp_hello_world`)
-}
-

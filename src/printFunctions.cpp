@@ -8,10 +8,10 @@ using namespace Rcpp;
  * 
  */
 
-void print_vector_elements(NumericVector v,StringVector names, String opening,String closing){
-  int l = v.length();
+void print_vector_elements(NumericVector v,StringVector names,String opening,String closing){
+  int ln = v.length();
   Rcout << opening.get_cstring();
-  for (int i = 0;i<l;++i) {
+  for (int i = 0;i<ln;++i) {
     Rcout << names(v(i)) << " ";
   }
   Rcout << closing.get_cstring();

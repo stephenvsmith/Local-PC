@@ -72,7 +72,11 @@ List pc_pop_get_skeleton_cpp(List var_list){
 
             if (verbose){
               Rcout << "l: " << l << " | i: " << i << " | j: " << j << " | k: ";
-              print_vector_elements(sep,names);
+              if (l == 0){
+                Rcout << sep;
+              } else {
+                print_vector_elements(sep,names);
+              }
               Rcout << " | p-val: " << pval;
               Rcout << std::endl;
               //print_S_vals(S);
@@ -157,7 +161,7 @@ List get_v_structures(List L) {
                 if (verbose){
                   Rcout << "Separation Set: ";
                   print_vector_elements_nonames(sublist[j]);
-                  Rcout << "V-Structure: " << i << "->" << k << "<-" << j << std::endl; 
+                  Rcout << " | V-Structure: " << i << "->" << k << "<-" << j << std::endl; 
                 }
                 G(k,i) = 0;
                 G(k,j) = 0;
