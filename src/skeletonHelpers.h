@@ -1,7 +1,6 @@
 #ifndef SKELETONHELPERS_H
 #define SKELETONHELPERS_H
 
-#include <Rcpp.h>
 using namespace Rcpp;
 
 NumericVector get_current_edges(int i,int p,NumericMatrix graph);
@@ -17,5 +16,12 @@ void check_separation(const int &l,const int &i,const int &j,
                       NumericVector &sep,NumericMatrix true_dag,
                       const StringVector &names,NumericMatrix C,
                       List S,double &pval,bool &verbose);
+
+void check_separation_sample(const int &l,const int &i,const int &j,
+                             const NumericMatrix &kvals,
+                             NumericVector &sep,NumericMatrix true_dag,
+                             const StringVector &names,NumericMatrix C,
+                             List S,double &pval,arma::mat &df,int &n,
+                             double &signif_level,bool &verbose);
 
 #endif

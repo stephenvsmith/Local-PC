@@ -1,0 +1,18 @@
+#ifndef PCORTEST_H
+#define PCORTEST_H
+
+#include<RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
+using namespace Rcpp;
+
+double get_partial_correlation(arma::mat C,int i,int j,arma::uvec k);
+
+double log_part(double r);
+
+double fisherZ(double pc,int n,int k_size);
+
+List condIndTest(arma::mat C,int i,int j,arma::uvec k,int n,double signif_level=0.95);
+
+
+#endif

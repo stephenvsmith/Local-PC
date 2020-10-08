@@ -1,5 +1,5 @@
-#include <Rcpp.h>
 #include "printFunctions.h"
+#include "pCorTest.h"
 using namespace Rcpp;
 
 /*
@@ -107,6 +107,63 @@ void check_separation(const int &l,const int &i,const int &j,
         Rcout << "The p-value is " << pval << std::endl;
       }
       if (pval==1){
+        if (verbose){
+          Rcout << names(i) << " is separated from " << names(j) << " by node(s):\n";
+          print_vector_elements(sep,names);
+        }
+        change_S(S,i,j,sep);
+        change_S(S,j,i,sep);
+        C(i,j) = 0;
+        C(j,i) = 0;
+        keep_checking_k = false;
+        if (verbose){
+          print_matrix(kvals);
+        }
+      }
+      ++k;
+    }
+  }
+}
+
+void check_separation_sample(const int &l,const int &i,const int &j,
+                      const NumericMatrix &kvals,
+                      NumericVector &sep,NumericMatrix true_dag,
+                      const StringVector &names,NumericMatrix C,
+                      List S,double &pval,arma::mat &R,int &n,
+                      double &signif_level,bool &verbose){
+  int k;
+  bool keep_checking_k;
+  List test_result;
+  
+  arma::uvec sep_arma;
+  
+  if (l == 0){
+    sep = NA_REAL;
+    Rcout << "Size of arma vector when l=0: " << sep_arma.size() << std::endl;
+    test_result = condIndTest(R,i,j,sep_arma,n,signif_level);
+    pval = test_result["pval"];
+    //pval = as<double>(get_pval(i,j,true_dag,names));
+    //Rcout << "The p-value is " << pval << std::endl;
+    if (test_result["result"]){
+      change_S_0(S,i,j);
+      change_S_0(S,j,i);
+      
+      C(i,j) = 0;
+      C(j,i) = 0;
+    }
+  } else {
+    k = 0;
+    keep_checking_k = true;
+    while (keep_checking_k & (k<kvals.cols())){
+      sep = kvals( _ , k );
+      sep_arma = as<arma::uvec>(sep);
+      test_result = condIndTest(R,i,j,sep_arma,n,signif_level);
+      pval = test_result["pval"];
+      //pval = as<double>(get_pval(i,j,true_dag,names,sep));
+      if (verbose){
+        Rcout << "The p-value is " << pval << std::endl;
+      }
+      if (test_result["result"]){
         if (verbose){
           Rcout << names(i) << " is separated from " << names(j) << " by node(s):\n";
           print_vector_elements(sep,names);

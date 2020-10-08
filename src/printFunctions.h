@@ -1,7 +1,9 @@
 #ifndef PRINTFUNCTIONS_H
 #define PRINTFUNCTIONS_H
 
-#include <Rcpp.h>
+#include<RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
 using namespace Rcpp;
 
 void print_vector_elements(NumericVector v,StringVector names, String opening="",String closing="");

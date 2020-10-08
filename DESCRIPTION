@@ -1,11 +1,13 @@
 Package: LocalPC
 Type: Package
-Title: What the Package Does in One 'Title Case' Line
+Title: What the Package Does Using Title Case
 Version: 1.0
-Date: 2020-09-25
+Date: 2020-10-07
 Author: Your Name
 Maintainer: Your Name <your@email.com>
-Description: One paragraph description of what the package does as one or more full sentences.
+Description: More details about what the package does. See
+            <http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file> for details
+            on how to write this part.
 License: GPL (>= 2)
 Imports: Rcpp (>= 1.0.5)
-LinkingTo: Rcpp
+LinkingTo: Rcpp, RcppArmadillo
