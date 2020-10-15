@@ -38,6 +38,7 @@ localpc_cpp <- function(data=NULL,true_dag=NULL,target,G=NULL,lmax=3,tol=0.01,
     true_dag <- as.matrix(true_dag)
   }
   
-  return(pc_sample_cpp(true_dag,data,target,node_names,lmax,1-tol,verbose,verbose_small))
+  # We change the target to target - 1 in order to accommodate change to C++
+  return(pc_sample_cpp(true_dag,data,target-1,node_names,lmax,1-tol,verbose,verbose_small))
 
 }
