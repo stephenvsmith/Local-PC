@@ -6,6 +6,7 @@ using namespace Rcpp;
  * Input: target node i, number of nodes p, and the true DAG
  * Returns: Vector of neighbors 
  */
+// [[Rcpp::export]]
 NumericVector get_neighbors_from_dag(int i,int p,NumericMatrix true_dag){
   NumericVector neighbors;
   NumericVector parents;
