@@ -28,7 +28,12 @@ localpc <- function(data=NULL,true_dag=NULL,target,G=NULL,lmax=3,tol=0.01,
 
 
 localpc_cpp <- function(data=NULL,true_dag=NULL,target,G=NULL,lmax=3,tol=0.01,
-                        pop=TRUE,verbose = TRUE,verbose_small=TRUE,
-                        orient_v=TRUE,fci_step1=FALSE){
+                        verbose = TRUE,verbose_small=TRUE){
+  if (is.data.frame(data)){
+    node_names <- colnames(data)
+    data <- as.matrix(data)
+  }
+  
+  return(pc_sample_cpp(true_dag,data,node_names,lmax,1-tol,verbose,verbose_small))
 
 }

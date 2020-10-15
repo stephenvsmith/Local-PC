@@ -89,19 +89,20 @@ BEGIN_RCPP
 END_RCPP
 }
 // pc_sample_cpp
-List pc_sample_cpp(NumericMatrix true_dag, arma::mat df, StringVector names, int lmax, double signif_level, bool verbose, bool verbose_small);
-RcppExport SEXP _LocalPC_pc_sample_cpp(SEXP true_dagSEXP, SEXP dfSEXP, SEXP namesSEXP, SEXP lmaxSEXP, SEXP signif_levelSEXP, SEXP verboseSEXP, SEXP verbose_smallSEXP) {
+List pc_sample_cpp(NumericMatrix true_dag, arma::mat df, int target, StringVector names, int lmax, double signif_level, bool verbose, bool verbose_small);
+RcppExport SEXP _LocalPC_pc_sample_cpp(SEXP true_dagSEXP, SEXP dfSEXP, SEXP targetSEXP, SEXP namesSEXP, SEXP lmaxSEXP, SEXP signif_levelSEXP, SEXP verboseSEXP, SEXP verbose_smallSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type true_dag(true_dagSEXP);
     Rcpp::traits::input_parameter< arma::mat >::type df(dfSEXP);
+    Rcpp::traits::input_parameter< int >::type target(targetSEXP);
     Rcpp::traits::input_parameter< StringVector >::type names(namesSEXP);
     Rcpp::traits::input_parameter< int >::type lmax(lmaxSEXP);
     Rcpp::traits::input_parameter< double >::type signif_level(signif_levelSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose_small(verbose_smallSEXP);
-    rcpp_result_gen = Rcpp::wrap(pc_sample_cpp(true_dag, df, names, lmax, signif_level, verbose, verbose_small));
+    rcpp_result_gen = Rcpp::wrap(pc_sample_cpp(true_dag, df, target, names, lmax, signif_level, verbose, verbose_small));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -156,7 +157,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_LocalPC_pc_pop_get_skeleton_cpp", (DL_FUNC) &_LocalPC_pc_pop_get_skeleton_cpp, 1},
     {"_LocalPC_pc_sample_get_skeleton_cpp", (DL_FUNC) &_LocalPC_pc_sample_get_skeleton_cpp, 3},
     {"_LocalPC_pc_pop_cpp", (DL_FUNC) &_LocalPC_pc_pop_cpp, 5},
-    {"_LocalPC_pc_sample_cpp", (DL_FUNC) &_LocalPC_pc_sample_cpp, 7},
+    {"_LocalPC_pc_sample_cpp", (DL_FUNC) &_LocalPC_pc_sample_cpp, 8},
     {"_LocalPC_rcpparma_hello_world", (DL_FUNC) &_LocalPC_rcpparma_hello_world, 0},
     {"_LocalPC_rcpparma_outerproduct", (DL_FUNC) &_LocalPC_rcpparma_outerproduct, 1},
     {"_LocalPC_rcpparma_innerproduct", (DL_FUNC) &_LocalPC_rcpparma_innerproduct, 1},

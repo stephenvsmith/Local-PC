@@ -289,11 +289,12 @@ List pc_pop_cpp(NumericMatrix true_dag,StringVector names,int lmax=3,bool verbos
 
 // [[Rcpp::export]]
 List pc_sample_cpp(NumericMatrix true_dag,arma::mat df,
+                   int target,
                    StringVector names,int lmax=3,
                    double signif_level = 0.95,
                    bool verbose=true,bool verbose_small=true){
   
-  List var_list = pc_pop_skeleton_setup_cpp(true_dag,names,lmax,verbose);
+  List var_list = pc_sample_skeleton_setup_cpp(true_dag,target,names,lmax,verbose);
   
   List final_skeleton_list = pc_sample_get_skeleton_cpp(var_list,df,signif_level);
   return get_v_structures(final_skeleton_list);

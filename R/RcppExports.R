@@ -25,8 +25,8 @@ pc_pop_cpp <- function(true_dag, names, lmax = 3L, verbose = TRUE, verbose_small
     .Call(`_LocalPC_pc_pop_cpp`, true_dag, names, lmax, verbose, verbose_small)
 }
 
-pc_sample_cpp <- function(true_dag, df, names, lmax = 3L, signif_level = 0.95, verbose = TRUE, verbose_small = TRUE) {
-    .Call(`_LocalPC_pc_sample_cpp`, true_dag, df, names, lmax, signif_level, verbose, verbose_small)
+pc_sample_cpp <- function(true_dag, df, target, names, lmax = 3L, signif_level = 0.95, verbose = TRUE, verbose_small = TRUE) {
+    .Call(`_LocalPC_pc_sample_cpp`, true_dag, df, target, names, lmax, signif_level, verbose, verbose_small)
 }
 
 rcpparma_hello_world <- function() {
