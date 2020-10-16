@@ -149,6 +149,32 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_initial_graph
+NumericMatrix get_initial_graph(int target, int p, NumericMatrix true_dag);
+RcppExport SEXP _LocalPC_get_initial_graph(SEXP targetSEXP, SEXP pSEXP, SEXP true_dagSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type target(targetSEXP);
+    Rcpp::traits::input_parameter< int >::type p(pSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type true_dag(true_dagSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_initial_graph(target, p, true_dag));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_neighbors_from_dag
+NumericVector get_neighbors_from_dag(int i, int p, NumericMatrix true_dag);
+RcppExport SEXP _LocalPC_get_neighbors_from_dag(SEXP iSEXP, SEXP pSEXP, SEXP true_dagSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type i(iSEXP);
+    Rcpp::traits::input_parameter< int >::type p(pSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type true_dag(true_dagSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_neighbors_from_dag(i, p, true_dag));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_LocalPC_get_partial_correlation", (DL_FUNC) &_LocalPC_get_partial_correlation, 4},
@@ -162,6 +188,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_LocalPC_rcpparma_outerproduct", (DL_FUNC) &_LocalPC_rcpparma_outerproduct, 1},
     {"_LocalPC_rcpparma_innerproduct", (DL_FUNC) &_LocalPC_rcpparma_innerproduct, 1},
     {"_LocalPC_rcpparma_bothproducts", (DL_FUNC) &_LocalPC_rcpparma_bothproducts, 1},
+    {"_LocalPC_get_initial_graph", (DL_FUNC) &_LocalPC_get_initial_graph, 3},
+    {"_LocalPC_get_neighbors_from_dag", (DL_FUNC) &_LocalPC_get_neighbors_from_dag, 3},
     {NULL, NULL, 0}
 };
 

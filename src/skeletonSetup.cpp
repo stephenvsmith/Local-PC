@@ -17,6 +17,7 @@ List create_conditioning_sets_cpp(int p){
   return S;
 }
 
+// [[Rcpp::export]]
 NumericMatrix get_initial_graph(int target,int p,NumericMatrix true_dag){
   
   NumericMatrix C_tilde(p);

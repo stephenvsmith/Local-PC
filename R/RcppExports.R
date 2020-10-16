@@ -45,3 +45,11 @@ rcpparma_bothproducts <- function(x) {
     .Call(`_LocalPC_rcpparma_bothproducts`, x)
 }
 
+get_initial_graph <- function(target, p, true_dag) {
+    .Call(`_LocalPC_get_initial_graph`, target, p, true_dag)
+}
+
+get_neighbors_from_dag <- function(i, p, true_dag) {
+    .Call(`_LocalPC_get_neighbors_from_dag`, i, p, true_dag)
+}
+
