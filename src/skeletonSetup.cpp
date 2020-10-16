@@ -23,18 +23,23 @@ NumericMatrix get_initial_graph(int target,int p,NumericMatrix true_dag){
   NumericMatrix C_tilde(p);
   
   NumericVector neighbors = get_neighbors_from_dag(target,p,true_dag);
+  neighbors.push_front(target);
+  Rcout << "There are " << neighbors.length() << " nodes in the neighborhood.\n";
   
   int node1;
   int node2;
   NumericVector::iterator it1;
   NumericVector::iterator it2;
   
-  for (it1 = neighbors.begin(); it1 != neighbors.end(); ++it1){
-    it2 = it1+1;
+  for (it1 = neighbors.begin(); it1 != neighbors.end()-1; ++it1){
     node1 = *it1;
-    node2 = *it2;
-    C_tilde(node1,node2) = 1;
-    C_tilde(node2,node1) = 1;
+    it2 = it1+1;
+    while(it2 != neighbors.end()){
+      node2 = *it2;
+      C_tilde(node1,node2) = 1;
+      C_tilde(node2,node1) = 1;
+      ++it2;
+    }
   }
   
   return C_tilde;
