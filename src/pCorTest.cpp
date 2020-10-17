@@ -42,7 +42,7 @@ List condIndTest(arma::mat C,int i,int j,arma::uvec k,int n,double signif_level)
   bool lower = pc_transformed < 0;
   
   double cutoff = R::qnorm((1+signif_level)/2,0.0,1.0,true,false);
-  Rcpp::Rcout << "Value = " << pc_transformed << " | Cutoff = " << cutoff << std::endl;
+  //Rcpp::Rcout << "Value = " << pc_transformed << " | Cutoff = " << cutoff << std::endl;
   return List::create(
     _["result"]=abs(pc_transformed) <= cutoff,
     _["pval"]=R::pnorm(pc_transformed,0.0,1.0,lower,false)                           

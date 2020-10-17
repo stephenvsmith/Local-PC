@@ -60,19 +60,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// pc_sample_get_skeleton_cpp
-List pc_sample_get_skeleton_cpp(List var_list, arma::mat df, double signif_level);
-RcppExport SEXP _LocalPC_pc_sample_get_skeleton_cpp(SEXP var_listSEXP, SEXP dfSEXP, SEXP signif_levelSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type var_list(var_listSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< double >::type signif_level(signif_levelSEXP);
-    rcpp_result_gen = Rcpp::wrap(pc_sample_get_skeleton_cpp(var_list, df, signif_level));
-    return rcpp_result_gen;
-END_RCPP
-}
 // pc_pop_cpp
 List pc_pop_cpp(NumericMatrix true_dag, StringVector names, int lmax, bool verbose, bool verbose_small);
 RcppExport SEXP _LocalPC_pc_pop_cpp(SEXP true_dagSEXP, SEXP namesSEXP, SEXP lmaxSEXP, SEXP verboseSEXP, SEXP verbose_smallSEXP) {
@@ -85,24 +72,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose_small(verbose_smallSEXP);
     rcpp_result_gen = Rcpp::wrap(pc_pop_cpp(true_dag, names, lmax, verbose, verbose_small));
-    return rcpp_result_gen;
-END_RCPP
-}
-// pc_sample_cpp
-List pc_sample_cpp(NumericMatrix true_dag, arma::mat df, int target, StringVector names, int lmax, double signif_level, bool verbose, bool verbose_small);
-RcppExport SEXP _LocalPC_pc_sample_cpp(SEXP true_dagSEXP, SEXP dfSEXP, SEXP targetSEXP, SEXP namesSEXP, SEXP lmaxSEXP, SEXP signif_levelSEXP, SEXP verboseSEXP, SEXP verbose_smallSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericMatrix >::type true_dag(true_dagSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type df(dfSEXP);
-    Rcpp::traits::input_parameter< int >::type target(targetSEXP);
-    Rcpp::traits::input_parameter< StringVector >::type names(namesSEXP);
-    Rcpp::traits::input_parameter< int >::type lmax(lmaxSEXP);
-    Rcpp::traits::input_parameter< double >::type signif_level(signif_levelSEXP);
-    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
-    Rcpp::traits::input_parameter< bool >::type verbose_small(verbose_smallSEXP);
-    rcpp_result_gen = Rcpp::wrap(pc_sample_cpp(true_dag, df, target, names, lmax, signif_level, verbose, verbose_small));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -149,6 +118,37 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// pc_sample_get_skeleton_cpp
+List pc_sample_get_skeleton_cpp(List var_list, arma::mat df, double signif_level);
+RcppExport SEXP _LocalPC_pc_sample_get_skeleton_cpp(SEXP var_listSEXP, SEXP dfSEXP, SEXP signif_levelSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type var_list(var_listSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type df(dfSEXP);
+    Rcpp::traits::input_parameter< double >::type signif_level(signif_levelSEXP);
+    rcpp_result_gen = Rcpp::wrap(pc_sample_get_skeleton_cpp(var_list, df, signif_level));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pc_sample_cpp
+List pc_sample_cpp(NumericMatrix true_dag, arma::mat df, int target, StringVector names, int lmax, double signif_level, bool verbose, bool verbose_small);
+RcppExport SEXP _LocalPC_pc_sample_cpp(SEXP true_dagSEXP, SEXP dfSEXP, SEXP targetSEXP, SEXP namesSEXP, SEXP lmaxSEXP, SEXP signif_levelSEXP, SEXP verboseSEXP, SEXP verbose_smallSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type true_dag(true_dagSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type df(dfSEXP);
+    Rcpp::traits::input_parameter< int >::type target(targetSEXP);
+    Rcpp::traits::input_parameter< StringVector >::type names(namesSEXP);
+    Rcpp::traits::input_parameter< int >::type lmax(lmaxSEXP);
+    Rcpp::traits::input_parameter< double >::type signif_level(signif_levelSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose_small(verbose_smallSEXP);
+    rcpp_result_gen = Rcpp::wrap(pc_sample_cpp(true_dag, df, target, names, lmax, signif_level, verbose, verbose_small));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_initial_graph
 NumericMatrix get_initial_graph(int target, int p, NumericMatrix true_dag);
 RcppExport SEXP _LocalPC_get_initial_graph(SEXP targetSEXP, SEXP pSEXP, SEXP true_dagSEXP) {
@@ -181,13 +181,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_LocalPC_fisherZ", (DL_FUNC) &_LocalPC_fisherZ, 3},
     {"_LocalPC_condIndTest", (DL_FUNC) &_LocalPC_condIndTest, 6},
     {"_LocalPC_pc_pop_get_skeleton_cpp", (DL_FUNC) &_LocalPC_pc_pop_get_skeleton_cpp, 1},
-    {"_LocalPC_pc_sample_get_skeleton_cpp", (DL_FUNC) &_LocalPC_pc_sample_get_skeleton_cpp, 3},
     {"_LocalPC_pc_pop_cpp", (DL_FUNC) &_LocalPC_pc_pop_cpp, 5},
-    {"_LocalPC_pc_sample_cpp", (DL_FUNC) &_LocalPC_pc_sample_cpp, 8},
     {"_LocalPC_rcpparma_hello_world", (DL_FUNC) &_LocalPC_rcpparma_hello_world, 0},
     {"_LocalPC_rcpparma_outerproduct", (DL_FUNC) &_LocalPC_rcpparma_outerproduct, 1},
     {"_LocalPC_rcpparma_innerproduct", (DL_FUNC) &_LocalPC_rcpparma_innerproduct, 1},
     {"_LocalPC_rcpparma_bothproducts", (DL_FUNC) &_LocalPC_rcpparma_bothproducts, 1},
+    {"_LocalPC_pc_sample_get_skeleton_cpp", (DL_FUNC) &_LocalPC_pc_sample_get_skeleton_cpp, 3},
+    {"_LocalPC_pc_sample_cpp", (DL_FUNC) &_LocalPC_pc_sample_cpp, 8},
     {"_LocalPC_get_initial_graph", (DL_FUNC) &_LocalPC_get_initial_graph, 3},
     {"_LocalPC_get_neighbors_from_dag", (DL_FUNC) &_LocalPC_get_neighbors_from_dag, 3},
     {NULL, NULL, 0}

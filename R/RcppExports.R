@@ -17,16 +17,8 @@ pc_pop_get_skeleton_cpp <- function(var_list) {
     .Call(`_LocalPC_pc_pop_get_skeleton_cpp`, var_list)
 }
 
-pc_sample_get_skeleton_cpp <- function(var_list, df, signif_level = 0.95) {
-    .Call(`_LocalPC_pc_sample_get_skeleton_cpp`, var_list, df, signif_level)
-}
-
 pc_pop_cpp <- function(true_dag, names, lmax = 3L, verbose = TRUE, verbose_small = TRUE) {
     .Call(`_LocalPC_pc_pop_cpp`, true_dag, names, lmax, verbose, verbose_small)
-}
-
-pc_sample_cpp <- function(true_dag, df, target, names, lmax = 3L, signif_level = 0.95, verbose = TRUE, verbose_small = TRUE) {
-    .Call(`_LocalPC_pc_sample_cpp`, true_dag, df, target, names, lmax, signif_level, verbose, verbose_small)
 }
 
 rcpparma_hello_world <- function() {
@@ -43,6 +35,14 @@ rcpparma_innerproduct <- function(x) {
 
 rcpparma_bothproducts <- function(x) {
     .Call(`_LocalPC_rcpparma_bothproducts`, x)
+}
+
+pc_sample_get_skeleton_cpp <- function(var_list, df, signif_level = 0.95) {
+    .Call(`_LocalPC_pc_sample_get_skeleton_cpp`, var_list, df, signif_level)
+}
+
+pc_sample_cpp <- function(true_dag, df, target, names, lmax = 3L, signif_level = 0.95, verbose = TRUE, verbose_small = TRUE) {
+    .Call(`_LocalPC_pc_sample_cpp`, true_dag, df, target, names, lmax, signif_level, verbose, verbose_small)
 }
 
 get_initial_graph <- function(target, p, true_dag) {
