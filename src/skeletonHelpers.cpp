@@ -139,7 +139,7 @@ void check_separation_sample(const int &l,const int &i,const int &j,
   
   if (l == 0){
     sep = NA_REAL;
-    Rcout << "Size of arma vector when l=0: " << sep_arma.size() << std::endl;
+    //Rcout << "Size of arma vector when l=0: " << sep_arma.size() << std::endl;
     test_result = condIndTest(R,i,j,sep_arma,n,signif_level);
     pval = test_result["pval"];
     //pval = as<double>(get_pval(i,j,true_dag,names));
