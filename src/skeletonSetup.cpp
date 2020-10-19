@@ -24,7 +24,8 @@ NumericMatrix get_initial_graph(int target,int p,NumericMatrix true_dag){
   
   NumericVector neighbors = get_neighbors_from_dag(target,p,true_dag);
   neighbors.push_front(target);
-  Rcout << "There are " << neighbors.length() << " nodes in the neighborhood.\n";
+
+  //Rcout << "There are " << neighbors.length() << " nodes in the neighborhood.\n";
   
   int node1;
   int node2;
