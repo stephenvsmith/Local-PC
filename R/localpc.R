@@ -44,21 +44,17 @@ localpc_cpp <- function(data=NULL,true_dag=NULL,target,G=NULL,lmax=3,tol=0.01,
 }
 
 localpc_est_nbhd_cpp <- function(data=NULL,target,G=NULL,lmax=3,tol=0.01,
-                                 rule="AND",rule_1se=FALSE,
+                                 rule="AND",rule_1se=FALSE,cv_folds=10,
                                  verbose = TRUE,verbose_small=TRUE){
   node_names <- colnames(data)
   if (is.data.frame(data)){
     data <- as.matrix(data)
   }
   
-  if (is.data.frame(true_dag)){
-    true_dag <- as.matrix(true_dag)
-  }
-  
   # We need to estimate the target's first- and second-order neighbors
-  estimate_neighborhood(data,target,method="lasso",rule="AND",rule_1se=FALSE)
+  true_dag_est <- estimate_neighborhood(data,target,method="lasso",rule=rule,rule_1se=rule_1se,cv_folds=cv_folds,verbose=verbose)
   
   # We change the target to target - 1 in order to accommodate change to C++
-  return(pc_sample_cpp(true_dag,data,target-1,node_names,lmax,1-tol,verbose,verbose_small))
+  return(pc_sample_cpp(true_dag_est,data,target-1,node_names,lmax,1-tol,verbose,verbose_small))
   
 }
