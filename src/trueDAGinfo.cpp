@@ -40,3 +40,11 @@ NumericVector get_neighbors_from_dag(int i,int p,NumericMatrix true_dag){
   
   return neighbors;
 }
+
+
+
+
+
+
+
+

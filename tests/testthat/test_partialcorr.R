@@ -3,7 +3,6 @@ context("Testing partial correlation functions")
 test_that("Partial Correlation function is accurate",{
   data("asiadf")
   C <- cor(asiadf)
-  #true_result <- pcalg::zStat(1,3,NULL,cor(asiadf),nrow(asiadf))
   true_result <- cor(asiadf)[1,3]
   est_result <- get_partial_correlation(cor(asiadf),0,2,double())
   expect_equal(est_result,true_result)

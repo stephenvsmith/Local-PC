@@ -34,17 +34,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // condIndTest
-List condIndTest(arma::mat C, int i, int j, arma::uvec k, int n, double signif_level);
+List condIndTest(arma::mat& C, const int& i, const int& j, const arma::uvec& k, const int& n, const double& signif_level);
 RcppExport SEXP _LocalPC_condIndTest(SEXP CSEXP, SEXP iSEXP, SEXP jSEXP, SEXP kSEXP, SEXP nSEXP, SEXP signif_levelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type C(CSEXP);
-    Rcpp::traits::input_parameter< int >::type i(iSEXP);
-    Rcpp::traits::input_parameter< int >::type j(jSEXP);
-    Rcpp::traits::input_parameter< arma::uvec >::type k(kSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    Rcpp::traits::input_parameter< double >::type signif_level(signif_levelSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type C(CSEXP);
+    Rcpp::traits::input_parameter< const int& >::type i(iSEXP);
+    Rcpp::traits::input_parameter< const int& >::type j(jSEXP);
+    Rcpp::traits::input_parameter< const arma::uvec& >::type k(kSEXP);
+    Rcpp::traits::input_parameter< const int& >::type n(nSEXP);
+    Rcpp::traits::input_parameter< const double& >::type signif_level(signif_levelSEXP);
     rcpp_result_gen = Rcpp::wrap(condIndTest(C, i, j, k, n, signif_level));
     return rcpp_result_gen;
 END_RCPP
@@ -72,49 +72,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose_small(verbose_smallSEXP);
     rcpp_result_gen = Rcpp::wrap(pc_pop_cpp(true_dag, names, lmax, verbose, verbose_small));
-    return rcpp_result_gen;
-END_RCPP
-}
-// rcpparma_hello_world
-arma::mat rcpparma_hello_world();
-RcppExport SEXP _LocalPC_rcpparma_hello_world() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(rcpparma_hello_world());
-    return rcpp_result_gen;
-END_RCPP
-}
-// rcpparma_outerproduct
-arma::mat rcpparma_outerproduct(const arma::colvec& x);
-RcppExport SEXP _LocalPC_rcpparma_outerproduct(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpparma_outerproduct(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// rcpparma_innerproduct
-double rcpparma_innerproduct(const arma::colvec& x);
-RcppExport SEXP _LocalPC_rcpparma_innerproduct(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpparma_innerproduct(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// rcpparma_bothproducts
-Rcpp::List rcpparma_bothproducts(const arma::colvec& x);
-RcppExport SEXP _LocalPC_rcpparma_bothproducts(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::colvec& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpparma_bothproducts(x));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -149,14 +106,123 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// create_conditioning_sets_efficient_cpp
-List create_conditioning_sets_efficient_cpp(IntegerVector& neighbors);
-RcppExport SEXP _LocalPC_create_conditioning_sets_efficient_cpp(SEXP neighborsSEXP) {
+// pc_sample_get_skeleton_efficient_cpp
+List pc_sample_get_skeleton_efficient_cpp(List var_list, arma::mat df, double signif_level);
+RcppExport SEXP _LocalPC_pc_sample_get_skeleton_efficient_cpp(SEXP var_listSEXP, SEXP dfSEXP, SEXP signif_levelSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< IntegerVector& >::type neighbors(neighborsSEXP);
-    rcpp_result_gen = Rcpp::wrap(create_conditioning_sets_efficient_cpp(neighbors));
+    Rcpp::traits::input_parameter< List >::type var_list(var_listSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type df(dfSEXP);
+    Rcpp::traits::input_parameter< double >::type signif_level(signif_levelSEXP);
+    rcpp_result_gen = Rcpp::wrap(pc_sample_get_skeleton_efficient_cpp(var_list, df, signif_level));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pc_sample_efficient_cpp
+List pc_sample_efficient_cpp(NumericMatrix true_dag, arma::mat df, int target, StringVector names, int lmax, double signif_level, bool verbose, bool verbose_small);
+RcppExport SEXP _LocalPC_pc_sample_efficient_cpp(SEXP true_dagSEXP, SEXP dfSEXP, SEXP targetSEXP, SEXP namesSEXP, SEXP lmaxSEXP, SEXP signif_levelSEXP, SEXP verboseSEXP, SEXP verbose_smallSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type true_dag(true_dagSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type df(dfSEXP);
+    Rcpp::traits::input_parameter< int >::type target(targetSEXP);
+    Rcpp::traits::input_parameter< StringVector >::type names(namesSEXP);
+    Rcpp::traits::input_parameter< int >::type lmax(lmaxSEXP);
+    Rcpp::traits::input_parameter< double >::type signif_level(signif_levelSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose_small(verbose_smallSEXP);
+    rcpp_result_gen = Rcpp::wrap(pc_sample_efficient_cpp(true_dag, df, target, names, lmax, signif_level, verbose, verbose_small));
+    return rcpp_result_gen;
+END_RCPP
+}
+// change_S
+List change_S(List S, int i, int j, NumericVector sep);
+RcppExport SEXP _LocalPC_change_S(SEXP SSEXP, SEXP iSEXP, SEXP jSEXP, SEXP sepSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type S(SSEXP);
+    Rcpp::traits::input_parameter< int >::type i(iSEXP);
+    Rcpp::traits::input_parameter< int >::type j(jSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type sep(sepSEXP);
+    rcpp_result_gen = Rcpp::wrap(change_S(S, i, j, sep));
+    return rcpp_result_gen;
+END_RCPP
+}
+// change_S_0
+List change_S_0(List S, int i, int j);
+RcppExport SEXP _LocalPC_change_S_0(SEXP SSEXP, SEXP iSEXP, SEXP jSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type S(SSEXP);
+    Rcpp::traits::input_parameter< int >::type i(iSEXP);
+    Rcpp::traits::input_parameter< int >::type j(jSEXP);
+    rcpp_result_gen = Rcpp::wrap(change_S_0(S, i, j));
+    return rcpp_result_gen;
+END_RCPP
+}
+// change_S_efficient
+void change_S_efficient(List& S, int i, int j, NumericVector sep);
+RcppExport SEXP _LocalPC_change_S_efficient(SEXP SSEXP, SEXP iSEXP, SEXP jSEXP, SEXP sepSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List& >::type S(SSEXP);
+    Rcpp::traits::input_parameter< int >::type i(iSEXP);
+    Rcpp::traits::input_parameter< int >::type j(jSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type sep(sepSEXP);
+    change_S_efficient(S, i, j, sep);
+    return R_NilValue;
+END_RCPP
+}
+// change_S_0_efficient
+void change_S_0_efficient(List& S, int i, int j);
+RcppExport SEXP _LocalPC_change_S_0_efficient(SEXP SSEXP, SEXP iSEXP, SEXP jSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List& >::type S(SSEXP);
+    Rcpp::traits::input_parameter< int >::type i(iSEXP);
+    Rcpp::traits::input_parameter< int >::type j(jSEXP);
+    change_S_0_efficient(S, i, j);
+    return R_NilValue;
+END_RCPP
+}
+// get_potential_sep
+NumericVector get_potential_sep(const int& i, const int& j, const NumericVector& neighborhood, const int& N, const NumericMatrix& true_dag);
+RcppExport SEXP _LocalPC_get_potential_sep(SEXP iSEXP, SEXP jSEXP, SEXP neighborhoodSEXP, SEXP NSEXP, SEXP true_dagSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const int& >::type i(iSEXP);
+    Rcpp::traits::input_parameter< const int& >::type j(jSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type neighborhood(neighborhoodSEXP);
+    Rcpp::traits::input_parameter< const int& >::type N(NSEXP);
+    Rcpp::traits::input_parameter< const NumericMatrix& >::type true_dag(true_dagSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_potential_sep(i, j, neighborhood, N, true_dag));
+    return rcpp_result_gen;
+END_RCPP
+}
+// create_conditioning_sets_efficient_cpp
+void create_conditioning_sets_efficient_cpp(List& S, NumericVector& neighbors);
+RcppExport SEXP _LocalPC_create_conditioning_sets_efficient_cpp(SEXP SSEXP, SEXP neighborsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List& >::type S(SSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type neighbors(neighborsSEXP);
+    create_conditioning_sets_efficient_cpp(S, neighbors);
+    return R_NilValue;
+END_RCPP
+}
+// create_conditioning_sets_efficient_cpp2
+List create_conditioning_sets_efficient_cpp2(NumericVector& neighbors);
+RcppExport SEXP _LocalPC_create_conditioning_sets_efficient_cpp2(SEXP neighborsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector& >::type neighbors(neighborsSEXP);
+    rcpp_result_gen = Rcpp::wrap(create_conditioning_sets_efficient_cpp2(neighbors));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -173,6 +239,36 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// pc_sample_skeleton_setup_cpp
+List pc_sample_skeleton_setup_cpp(NumericMatrix& true_dag, const int& target, StringVector& names, const int& lmax, bool& verbose);
+RcppExport SEXP _LocalPC_pc_sample_skeleton_setup_cpp(SEXP true_dagSEXP, SEXP targetSEXP, SEXP namesSEXP, SEXP lmaxSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix& >::type true_dag(true_dagSEXP);
+    Rcpp::traits::input_parameter< const int& >::type target(targetSEXP);
+    Rcpp::traits::input_parameter< StringVector& >::type names(namesSEXP);
+    Rcpp::traits::input_parameter< const int& >::type lmax(lmaxSEXP);
+    Rcpp::traits::input_parameter< bool& >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(pc_sample_skeleton_setup_cpp(true_dag, target, names, lmax, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pc_sample_skeleton_setup_efficient_cpp
+List pc_sample_skeleton_setup_efficient_cpp(NumericMatrix& true_dag, const int& target, StringVector& names, const int& lmax, bool& verbose);
+RcppExport SEXP _LocalPC_pc_sample_skeleton_setup_efficient_cpp(SEXP true_dagSEXP, SEXP targetSEXP, SEXP namesSEXP, SEXP lmaxSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix& >::type true_dag(true_dagSEXP);
+    Rcpp::traits::input_parameter< const int& >::type target(targetSEXP);
+    Rcpp::traits::input_parameter< StringVector& >::type names(namesSEXP);
+    Rcpp::traits::input_parameter< const int& >::type lmax(lmaxSEXP);
+    Rcpp::traits::input_parameter< bool& >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(pc_sample_skeleton_setup_efficient_cpp(true_dag, target, names, lmax, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_neighbors_from_dag
 NumericVector get_neighbors_from_dag(int i, int p, NumericMatrix true_dag);
 RcppExport SEXP _LocalPC_get_neighbors_from_dag(SEXP iSEXP, SEXP pSEXP, SEXP true_dagSEXP) {
@@ -186,6 +282,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// makeFinalGraph
+void makeFinalGraph(NumericMatrix& G, NumericMatrix& C, NumericVector& neighborhood, const int& N);
+RcppExport SEXP _LocalPC_makeFinalGraph(SEXP GSEXP, SEXP CSEXP, SEXP neighborhoodSEXP, SEXP NSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix& >::type G(GSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix& >::type C(CSEXP);
+    Rcpp::traits::input_parameter< NumericVector& >::type neighborhood(neighborhoodSEXP);
+    Rcpp::traits::input_parameter< const int& >::type N(NSEXP);
+    makeFinalGraph(G, C, neighborhood, N);
+    return R_NilValue;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_LocalPC_get_partial_correlation", (DL_FUNC) &_LocalPC_get_partial_correlation, 4},
@@ -193,15 +302,22 @@ static const R_CallMethodDef CallEntries[] = {
     {"_LocalPC_condIndTest", (DL_FUNC) &_LocalPC_condIndTest, 6},
     {"_LocalPC_pc_pop_get_skeleton_cpp", (DL_FUNC) &_LocalPC_pc_pop_get_skeleton_cpp, 1},
     {"_LocalPC_pc_pop_cpp", (DL_FUNC) &_LocalPC_pc_pop_cpp, 5},
-    {"_LocalPC_rcpparma_hello_world", (DL_FUNC) &_LocalPC_rcpparma_hello_world, 0},
-    {"_LocalPC_rcpparma_outerproduct", (DL_FUNC) &_LocalPC_rcpparma_outerproduct, 1},
-    {"_LocalPC_rcpparma_innerproduct", (DL_FUNC) &_LocalPC_rcpparma_innerproduct, 1},
-    {"_LocalPC_rcpparma_bothproducts", (DL_FUNC) &_LocalPC_rcpparma_bothproducts, 1},
     {"_LocalPC_pc_sample_get_skeleton_cpp", (DL_FUNC) &_LocalPC_pc_sample_get_skeleton_cpp, 3},
     {"_LocalPC_pc_sample_cpp", (DL_FUNC) &_LocalPC_pc_sample_cpp, 8},
-    {"_LocalPC_create_conditioning_sets_efficient_cpp", (DL_FUNC) &_LocalPC_create_conditioning_sets_efficient_cpp, 1},
+    {"_LocalPC_pc_sample_get_skeleton_efficient_cpp", (DL_FUNC) &_LocalPC_pc_sample_get_skeleton_efficient_cpp, 3},
+    {"_LocalPC_pc_sample_efficient_cpp", (DL_FUNC) &_LocalPC_pc_sample_efficient_cpp, 8},
+    {"_LocalPC_change_S", (DL_FUNC) &_LocalPC_change_S, 4},
+    {"_LocalPC_change_S_0", (DL_FUNC) &_LocalPC_change_S_0, 3},
+    {"_LocalPC_change_S_efficient", (DL_FUNC) &_LocalPC_change_S_efficient, 4},
+    {"_LocalPC_change_S_0_efficient", (DL_FUNC) &_LocalPC_change_S_0_efficient, 3},
+    {"_LocalPC_get_potential_sep", (DL_FUNC) &_LocalPC_get_potential_sep, 5},
+    {"_LocalPC_create_conditioning_sets_efficient_cpp", (DL_FUNC) &_LocalPC_create_conditioning_sets_efficient_cpp, 2},
+    {"_LocalPC_create_conditioning_sets_efficient_cpp2", (DL_FUNC) &_LocalPC_create_conditioning_sets_efficient_cpp2, 1},
     {"_LocalPC_get_initial_graph", (DL_FUNC) &_LocalPC_get_initial_graph, 3},
+    {"_LocalPC_pc_sample_skeleton_setup_cpp", (DL_FUNC) &_LocalPC_pc_sample_skeleton_setup_cpp, 5},
+    {"_LocalPC_pc_sample_skeleton_setup_efficient_cpp", (DL_FUNC) &_LocalPC_pc_sample_skeleton_setup_efficient_cpp, 5},
     {"_LocalPC_get_neighbors_from_dag", (DL_FUNC) &_LocalPC_get_neighbors_from_dag, 3},
+    {"_LocalPC_makeFinalGraph", (DL_FUNC) &_LocalPC_makeFinalGraph, 4},
     {NULL, NULL, 0}
 };
 

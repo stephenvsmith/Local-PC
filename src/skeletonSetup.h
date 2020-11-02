@@ -10,4 +10,6 @@ List pc_pop_skeleton_setup_cpp(NumericMatrix &true_dag,StringVector &names,const
 
 List pc_sample_skeleton_setup_cpp(NumericMatrix &true_dag,const int &target,StringVector &names,const int &lmax,bool &verbose);
 
+List pc_sample_skeleton_setup_efficient_cpp(NumericMatrix &true_dag,const int &target,StringVector &names,const int &lmax,bool &verbose);
+
 #endif

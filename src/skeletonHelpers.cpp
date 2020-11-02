@@ -46,6 +46,7 @@ NumericMatrix combn_cpp(NumericVector x,int l){
 /*
  * This function helps us to add a separating set for nodes i and j
  */
+// [[Rcpp::export]]
 List change_S(List S,int i,int j,NumericVector sep){
   NumericVector sep_new;
   sep_new = clone(sep);
@@ -64,6 +65,7 @@ List change_S(List S,int i,int j,NumericVector sep){
 /*
  * Allows us to change S to indicate that nodes i and j are separated without a separating set
  */
+// [[Rcpp::export]]
 List change_S_0(List S,int i,int j){
   
   // Rcout << "S before:\n";
@@ -125,6 +127,12 @@ void check_separation(const int &l,const int &i,const int &j,
   }
 }
 
+/*
+ * 
+ * This function checks whether or not nodes i and j are separated by any of the 
+ * sets in the matrix kvals for a given significance level
+ * 
+ */
 void check_separation_sample(const int &l,const int &i,const int &j,
                       const NumericMatrix &kvals,
                       NumericVector &sep,NumericMatrix true_dag,

@@ -21,22 +21,6 @@ pc_pop_cpp <- function(true_dag, names, lmax = 3L, verbose = TRUE, verbose_small
     .Call(`_LocalPC_pc_pop_cpp`, true_dag, names, lmax, verbose, verbose_small)
 }
 
-rcpparma_hello_world <- function() {
-    .Call(`_LocalPC_rcpparma_hello_world`)
-}
-
-rcpparma_outerproduct <- function(x) {
-    .Call(`_LocalPC_rcpparma_outerproduct`, x)
-}
-
-rcpparma_innerproduct <- function(x) {
-    .Call(`_LocalPC_rcpparma_innerproduct`, x)
-}
-
-rcpparma_bothproducts <- function(x) {
-    .Call(`_LocalPC_rcpparma_bothproducts`, x)
-}
-
 pc_sample_get_skeleton_cpp <- function(var_list, df, signif_level = 0.05) {
     .Call(`_LocalPC_pc_sample_get_skeleton_cpp`, var_list, df, signif_level)
 }
@@ -45,15 +29,59 @@ pc_sample_cpp <- function(true_dag, df, target, names, lmax = 3L, signif_level =
     .Call(`_LocalPC_pc_sample_cpp`, true_dag, df, target, names, lmax, signif_level, verbose, verbose_small)
 }
 
-create_conditioning_sets_efficient_cpp <- function(neighbors) {
-    .Call(`_LocalPC_create_conditioning_sets_efficient_cpp`, neighbors)
+pc_sample_get_skeleton_efficient_cpp <- function(var_list, df, signif_level = 0.05) {
+    .Call(`_LocalPC_pc_sample_get_skeleton_efficient_cpp`, var_list, df, signif_level)
+}
+
+pc_sample_efficient_cpp <- function(true_dag, df, target, names, lmax = 3L, signif_level = 0.05, verbose = TRUE, verbose_small = TRUE) {
+    .Call(`_LocalPC_pc_sample_efficient_cpp`, true_dag, df, target, names, lmax, signif_level, verbose, verbose_small)
+}
+
+change_S <- function(S, i, j, sep) {
+    .Call(`_LocalPC_change_S`, S, i, j, sep)
+}
+
+change_S_0 <- function(S, i, j) {
+    .Call(`_LocalPC_change_S_0`, S, i, j)
+}
+
+change_S_efficient <- function(S, i, j, sep) {
+    invisible(.Call(`_LocalPC_change_S_efficient`, S, i, j, sep))
+}
+
+change_S_0_efficient <- function(S, i, j) {
+    invisible(.Call(`_LocalPC_change_S_0_efficient`, S, i, j))
+}
+
+get_potential_sep <- function(i, j, neighborhood, N, true_dag) {
+    .Call(`_LocalPC_get_potential_sep`, i, j, neighborhood, N, true_dag)
+}
+
+create_conditioning_sets_efficient_cpp <- function(S, neighbors) {
+    invisible(.Call(`_LocalPC_create_conditioning_sets_efficient_cpp`, S, neighbors))
+}
+
+create_conditioning_sets_efficient_cpp2 <- function(neighbors) {
+    .Call(`_LocalPC_create_conditioning_sets_efficient_cpp2`, neighbors)
 }
 
 get_initial_graph <- function(target, p, true_dag) {
     .Call(`_LocalPC_get_initial_graph`, target, p, true_dag)
 }
 
+pc_sample_skeleton_setup_cpp <- function(true_dag, target, names, lmax, verbose) {
+    .Call(`_LocalPC_pc_sample_skeleton_setup_cpp`, true_dag, target, names, lmax, verbose)
+}
+
+pc_sample_skeleton_setup_efficient_cpp <- function(true_dag, target, names, lmax, verbose) {
+    .Call(`_LocalPC_pc_sample_skeleton_setup_efficient_cpp`, true_dag, target, names, lmax, verbose)
+}
+
 get_neighbors_from_dag <- function(i, p, true_dag) {
     .Call(`_LocalPC_get_neighbors_from_dag`, i, p, true_dag)
+}
+
+makeFinalGraph <- function(G, C, neighborhood, N) {
+    invisible(.Call(`_LocalPC_makeFinalGraph`, G, C, neighborhood, N))
 }
 

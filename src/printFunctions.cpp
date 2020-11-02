@@ -56,3 +56,14 @@ void print_S_vals(List S){
     Rcout << std::endl;
   }
 }
+
+void iteration_print(const int &l,const int &i,const int &j,const NumericVector &sep,const StringVector &names,const double &pval){
+  Rcout << "l: " << l << " | i: " << i << " | j: " << j << " | k: ";
+  if (l == 0){
+    Rcout << sep;
+  } else {
+    print_vector_elements(sep,names);
+  }
+  Rcout << " | p-val: " << pval;
+  Rcout << std::endl;
+}

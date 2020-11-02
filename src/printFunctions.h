@@ -14,4 +14,6 @@ void print_matrix(NumericMatrix m);
 
 void print_S_vals(List S);
 
+void iteration_print(const int &l,const int &i,const int &j,const NumericVector &sep,const StringVector &names,const double &pval);
+
 #endif
