@@ -8,7 +8,7 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-List pc_sample_get_skeleton_cpp(List var_list,arma::mat df,double signif_level=0.95){
+List pc_sample_get_skeleton_cpp(List var_list,arma::mat df,double signif_level=0.05){
   int l = -1;
   int lmax = var_list["lmax"];
   int p = var_list["p"];
@@ -109,7 +109,7 @@ List pc_sample_get_skeleton_cpp(List var_list,arma::mat df,double signif_level=0
 List pc_sample_cpp(NumericMatrix true_dag,arma::mat df,
                    int target,
                    StringVector names,int lmax=3,
-                   double signif_level = 0.95,
+                   double signif_level = 0.05,
                    bool verbose=true,bool verbose_small=true){
   
   List var_list = pc_sample_skeleton_setup_cpp(true_dag,target,names,lmax,verbose);

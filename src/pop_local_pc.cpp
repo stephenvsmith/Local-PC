@@ -10,17 +10,17 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 List pc_pop_get_skeleton_cpp(List var_list){
   int l = -1;
-  int lmax = var_list["lmax"];
-  int p = var_list["p"];
-  bool verbose = var_list["verbose"];
-  NumericMatrix C_tilde = var_list["C_tilde"];
-  NumericMatrix C = clone(C_tilde);
-  NumericMatrix true_dag = var_list["true_dag"];
-  StringVector names = var_list["names"];
-  List S = var_list["S"];
+  int lmax = var_list["lmax"]; // Maximum separating set size
+  int p = var_list["p"]; // Number of nodes in the network
+  bool verbose = var_list["verbose"]; // Whether or not to print diagnostic information
+  NumericMatrix C_tilde = var_list["C_tilde"]; // The initial graph
+  NumericMatrix C = clone(C_tilde); // Clone of the initial graph that will be modified
+  NumericMatrix true_dag = var_list["true_dag"]; // A pxp matrix of the true DAG
+  StringVector names = var_list["names"]; // A vector of length p with the names of the nodes
+  List S = var_list["S"]; // A p^2 size list containing the separating sets for the different nodes.
 
   NumericVector exceptions; //= {0,0};
-  NumericVector neighbors;
+  NumericVector neighbors; 
   NumericVector edges_i;
   NumericVector sep;
 

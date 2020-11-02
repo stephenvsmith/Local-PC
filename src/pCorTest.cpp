@@ -5,6 +5,11 @@ using namespace Rcpp;
 // Here, we are treating C as the correlation matrix
 // [[Rcpp::export]]
 double get_partial_correlation(arma::mat C,int i,int j,arma::uvec k){
+  
+  if (i == j){
+    return(1.0);
+  }
+  
   double pc;
   int k_size = k.size();
   
@@ -27,7 +32,13 @@ double get_partial_correlation(arma::mat C,int i,int j,arma::uvec k){
 }
 
 double log_part(double r){
-  return log1p((2*r)/(1-r));
+  double result;
+  if (r == 1){ // Perfect correlation means this value will approach infinity
+    result = 1000;
+  } else {
+    result = log1p((2*r)/(1-r));
+  }
+  return result; // returns log_e(1 + (2*r/(1-r)))
 }
 
 // [[Rcpp::export]]
@@ -36,15 +47,16 @@ double fisherZ(double pc,int n,int k_size){
 }
 
 // [[Rcpp::export]]
-List condIndTest(arma::mat C,int i,int j,arma::uvec k,int n,double signif_level){
+List condIndTest(arma::mat &C,const int &i,const int &j,const arma::uvec &k,const int &n,const double &signif_level){
   double pc = get_partial_correlation(C,i,j,k);
   double pc_transformed = fisherZ(pc,n,k.size());
+
   bool lower = pc_transformed < 0;
   
-  double cutoff = R::qnorm((1+signif_level)/2,0.0,1.0,true,false);
-  //Rcpp::Rcout << "Value = " << pc_transformed << " | Cutoff = " << cutoff << std::endl;
+  double cutoff = R::qnorm(1-signif_level/2,0.0,1.0,true,false);
+  //Rcpp::Rcout << "Value = " << pc_transformed << " | Cutoff = " << cutoff << " | Result = " << std::abs(pc_transformed) - cutoff << std::endl;
   return List::create(
-    _["result"]=abs(pc_transformed) <= cutoff,
-    _["pval"]=R::pnorm(pc_transformed,0.0,1.0,lower,false)                           
+    _["result"]=std::abs(pc_transformed) <= cutoff, // The null hypothesis is accepted (p-value large) => H_0: r = 0 => Conditional independence
+    _["pval"]=2*R::pnorm(pc_transformed,0.0,1.0,lower,false)                           
   );
 }

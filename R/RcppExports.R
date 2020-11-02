@@ -37,12 +37,16 @@ rcpparma_bothproducts <- function(x) {
     .Call(`_LocalPC_rcpparma_bothproducts`, x)
 }
 
-pc_sample_get_skeleton_cpp <- function(var_list, df, signif_level = 0.95) {
+pc_sample_get_skeleton_cpp <- function(var_list, df, signif_level = 0.05) {
     .Call(`_LocalPC_pc_sample_get_skeleton_cpp`, var_list, df, signif_level)
 }
 
-pc_sample_cpp <- function(true_dag, df, target, names, lmax = 3L, signif_level = 0.95, verbose = TRUE, verbose_small = TRUE) {
+pc_sample_cpp <- function(true_dag, df, target, names, lmax = 3L, signif_level = 0.05, verbose = TRUE, verbose_small = TRUE) {
     .Call(`_LocalPC_pc_sample_cpp`, true_dag, df, target, names, lmax, signif_level, verbose, verbose_small)
+}
+
+create_conditioning_sets_efficient_cpp <- function(neighbors) {
+    .Call(`_LocalPC_create_conditioning_sets_efficient_cpp`, neighbors)
 }
 
 get_initial_graph <- function(target, p, true_dag) {
