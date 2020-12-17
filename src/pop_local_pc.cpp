@@ -1,11 +1,99 @@
 #include<RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
-#include "printFunctions.h"
-#include "trueDAGinfo.h"
-#include "skeletonSetup.h"
-#include "skeletonHelpers.h"
+#include "sharedFunctions.h"
+#include "deprecatedFunctions.h"
 #include "vStructHelpers.h"
 using namespace Rcpp;
+
+/*
+ * The following function sets up the basic data structures for the skeleton algorithm that is used
+ * for the sample version of the algorithm
+ */
+// [[Rcpp::export]]
+List pc_pop_skeleton_setup_cpp(NumericMatrix &true_dag,StringVector &names,const int &lmax,bool &verbose){
+  // Number of nodes
+  int p = 0;
+  p = true_dag.nrow();
+  
+  if (verbose){
+    Rcout << "There are " << p << " nodes in the DAG.\n";
+  }
+  
+  // Initial graph that will be modified through the process of the algorithm
+  NumericMatrix C_tilde(p);
+  std::fill(C_tilde.begin(), C_tilde.end(), 1);
+  C_tilde.fill_diag(0);
+  
+  if (verbose){
+    Rcout << "Our starting matrix is " << C_tilde.nrow() << "x" << C_tilde.ncol() << ".\n";
+  }
+  
+  // Create the list that will store 
+  List S = create_conditioning_sets_cpp(p);
+  
+  std::vector<double> p_vals;
+  
+  return List::create(
+    _["p"] = p,
+    _["C_tilde"]=C_tilde,
+    _["true_dag"]=true_dag,
+    _["names"]=names,
+    _["lmax"]=lmax,
+    _["S"]=S,
+    _["verbose"]=verbose,
+    _["p_vals"]=p_vals);
+  
+}
+
+/*
+ * This function checks for separation between node i and node j
+ * given any set from the matrix kvals (each column is a potential
+ * separating set)
+ */
+void check_separation(const int &l,const int &i,const int &j,
+                      const NumericMatrix &kvals,Function get_pval,
+                      NumericVector &sep,NumericMatrix true_dag,
+                      const StringVector &names,NumericMatrix C,
+                      List S,double &pval,bool &verbose){
+  int k;
+  int kp = kvals.cols();
+  bool keep_checking_k; // Tracks to see whether or not to keep check for separating sets
+  
+  if (l == 0){
+    sep = NA_REAL;
+    pval = as<double>(get_pval(i,j,true_dag,names));
+    //Rcout << "The p-value is " << pval << std::endl;
+    if (pval == 1){
+      change_S_0(S,i,j);
+      change_S_0(S,j,i);
+      
+      C(i,j) = 0;
+      C(j,i) = 0;
+    }
+  } else {
+    k = 0;
+    keep_checking_k = true;
+    while (keep_checking_k & (k<kp)){
+      sep = kvals( _ , k );
+      pval = as<double>(get_pval(i,j,true_dag,names,sep));
+      if (verbose){
+        Rcout << "The p-value is " << pval << std::endl;
+      }
+      if (pval==1){
+        if (verbose){
+          Rcout << names(i) << " is separated from " << names(j) << " by node(s):\n";
+          print_vector_elements(sep,names);
+        }
+        change_S(S,i,j,sep);
+        change_S(S,j,i,sep);
+        C(i,j) = 0;
+        C(j,i) = 0;
+        keep_checking_k = false;
+      }
+      ++k;
+    }
+  }
+}
 
 // [[Rcpp::export]]
 List pc_pop_get_skeleton_cpp(List var_list){
@@ -103,8 +191,6 @@ List pc_pop_get_skeleton_cpp(List var_list){
     _["verbose"]=verbose
   );
 }
-
-
 
 
 

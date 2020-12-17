@@ -21,7 +21,7 @@ test_that("Get correct neighbors and check separating set update",{
   
   neighborhood <- c(target,neighbors)
   expect_equal(length(neighborhood),6)
-  expect_equal(neighborhood,c(5, 4, 1, 6, 3, 7))
+  expect_equal(sort(neighborhood),c(1,3,4,5,6,7))
   S <- create_conditioning_sets_efficient_cpp2(neighborhood)
   i <- 2
   j <- 6

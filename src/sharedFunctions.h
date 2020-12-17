@@ -1,10 +1,16 @@
-#ifndef PRINTFUNCTIONS_H
-#define PRINTFUNCTIONS_H
+#ifndef SHAREDFUNCTIONS_H
+#define SHAREDFUNCTIONS_H
 
 #include<RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
 using namespace Rcpp;
+
+NumericVector get_current_edges(int i,int p,NumericMatrix graph);
+
+NumericMatrix combn_cpp(NumericVector x,int l);
+
+NumericVector get_neighbors_from_dag(int i,int p,NumericMatrix true_dag);
 
 void print_vector_elements(NumericVector v,StringVector names, String opening="",String closing="");
 

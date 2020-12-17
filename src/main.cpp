@@ -1,10 +1,7 @@
 #include<RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
-#include "printFunctions.h"
-#include "trueDAGinfo.h"
-#include "skeletonSetup.h"
+#include "sharedFunctions.h"
 #include "skeletonHelpersEfficient.h"
-#include "skeletonHelpers.h"
 #include "vStructHelpers.h"
 using namespace Rcpp;
 
@@ -23,7 +20,7 @@ List pc_sample_get_skeleton_efficient_cpp(List var_list,arma::mat df,double sign
   
   arma::mat R = arma::cor(df);
   int n = df.n_rows;
-
+  
   NumericVector neighbors;
   NumericVector edges_i;
   NumericVector sep;
@@ -49,11 +46,12 @@ List pc_sample_get_skeleton_efficient_cpp(List var_list,arma::mat df,double sign
       for (NumericVector::iterator it = edges_i.begin(); it != edges_i.end(); ++it){
         int j = *it;
         if (j != i){
-          
+    
           if (verbose){
             Rcout << "The value of j is " << j << std::endl;
           }
           // Find neighbors of i and j from the true DAG (or they are estimated)
+          // These neighbors are using the true node numbers (check documentation for this function)
           neighbors = get_potential_sep(i,j,neighborhood,N,true_dag);
           
           // If there are enough potential neighbors to match the current separating set size, we continue
@@ -63,12 +61,11 @@ List pc_sample_get_skeleton_efficient_cpp(List var_list,arma::mat df,double sign
             }
             kvals = combn_cpp(neighbors,l);
             
-            check_separation_sample_efficient(l,i,j,kvals,sep,true_dag,names,neighborhood,C,S,pval,R,n,signif_level,verbose);
+            check_separation_sample_efficient(l,i,j,kvals,sep,true_dag,names,neighborhood,C,S,pval,num_tests,R,n,signif_level,verbose);
             
             if (verbose){
               iteration_print(l,i,j,sep,names,pval);
             }
-            ++num_tests;
           }
         }
       }
@@ -94,10 +91,10 @@ List pc_sample_get_skeleton_efficient_cpp(List var_list,arma::mat df,double sign
 
 // [[Rcpp::export]]
 List pc_sample_efficient_cpp(NumericMatrix true_dag,arma::mat df,
-                   int target,
-                   StringVector names,int lmax=3,
-                   double signif_level = 0.05,
-                   bool verbose=true,bool verbose_small=true){
+                             int target,
+                             StringVector names,int lmax=3,
+                             double signif_level = 0.05,
+                             bool verbose=true,bool verbose_small=true){
   
   List var_list = pc_sample_skeleton_setup_efficient_cpp(true_dag,target,names,lmax,verbose); // Well tested
   

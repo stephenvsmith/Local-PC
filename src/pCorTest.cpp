@@ -16,6 +16,7 @@ double get_partial_correlation(arma::mat C,int i,int j,arma::uvec k){
   if (k_size==0){
     pc = C(i,j);
   } else if (k_size==1){
+    //Rcout << "i=" << i << " | j=" << j << " | k=" << k(0) << " | C(i,k)=" << C(i,k(0)) << " | C(j,k)" << C(j,k(0)) << std::endl;
     pc = (C(i,j)-C(i,k(0))*C(j,k(0))) / sqrt( (1-pow(C(i,k(0)),2))*(1-pow(C(j,k(0)),2)));
   } else {
     arma::uvec indices(k_size+2);
