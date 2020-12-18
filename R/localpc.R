@@ -39,7 +39,7 @@ localpc_cpp <- function(data=NULL,true_dag=NULL,target,G=NULL,lmax=3,tol=0.01,
   }
   
   # We change the target to target - 1 in order to accommodate change to C++
-  return(pc_sample_efficient_cpp(true_dag,data,target-1,node_names,lmax,1-tol,verbose,verbose_small))
+  return(pc_sample_efficient_cpp(true_dag,data,target-1,node_names,lmax,1-tol,verbose,verbose_small=FALSE))
 
 }
 
@@ -55,6 +55,6 @@ localpc_est_nbhd_cpp <- function(data=NULL,target,G=NULL,lmax=3,tol=0.01,
   true_dag_est <- estimate_neighborhood_bic(data,target,verbose=verbose)
   
   # We change the target to target - 1 in order to accommodate change to C++
-  return(pc_sample_efficient_cpp(true_dag_est,data,target-1,node_names,lmax,1-tol,verbose,verbose_small))
+  return(pc_sample_efficient_cpp(true_dag_est,data,target-1,node_names,lmax,1-tol,verbose,verbose_small=FALSE))
   
 }
