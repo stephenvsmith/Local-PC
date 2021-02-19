@@ -14,3 +14,6 @@ Results/
 *.out
 *.DS_Store*
 .Rproj.user
+*.o
+*.so
+.gitignore
